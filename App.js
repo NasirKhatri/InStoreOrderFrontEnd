@@ -1,12 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import 'react-native-gesture-handler';
+
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+import { StyleSheet } from 'react-native';
+
+import LoginSubscribeStack from './Routes/LoginSubscribeStack';
+
+const Drawer = createDrawerNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator screenOptions={{headerShown: false}}>
+        <Drawer.Screen name="Login" component={LoginSubscribeStack} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
 }
 
