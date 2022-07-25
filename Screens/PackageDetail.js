@@ -14,7 +14,7 @@ const PackageDetail = ({navigation}) => {
                 <Text>No of Tables: 6</Text>
                 <Text>No of Admins: 1</Text>
                 <Text>No of Cashier: 1</Text>
-                <FlatButton text="Buy Now" onPress={() => navigation.navigate('Subscribe')} />
+                <FlatButton text="Buy Now" onPress={() => navigation.navigate('Subscribe')}/>
             </View>
             <LoginSubscribeFooter text1='Already have account?' text2='Login' linkTo='Login' navigation={navigation} />
         </View>

@@ -13,7 +13,7 @@ const globalStyles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 20,
         paddingHorizontal: 20,
-        backgroundColor: '#f2f2f2'
+        backgroundColor: '#e6e6ff'
     },
     input: {
         marginTop: 10,
