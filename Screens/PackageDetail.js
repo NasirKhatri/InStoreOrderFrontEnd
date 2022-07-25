@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, Text } from 'react-native';
 import globalStyles from '../globalStyles';
 import { Button } from "@react-native-material/core";
-import FlatButton from '../Components/Button';
+import {FlatButton} from '../Components/Button';
 
 import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
 

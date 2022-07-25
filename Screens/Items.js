@@ -1,13 +1,31 @@
 import * as React from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text } from 'react-native';
 import globalStyles from '../globalStyles';
-import FlatButton from '../Components/Button.js';
-import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
+import { CartButton } from '../Components/Button.js';
+import ItemCard from '../Components/ItemCard';
+import { FlatList } from 'react-native';
 
 const ItemsScreen = ({ navigation }) => {
+    const items = [
+        { key: '1' },
+        { key: '2' },
+        { key: '3' },
+        { key: '4' },
+        { key: '5' },
+        { key: '6' },
+        { key: '7' },
+        { key: '8' },
+        { key: '9' },
+        { key: '10' },
+    ];
     return (
         <View style={globalStyles.body}>
-            <Text>This is Items Screen</Text>      
+            <FlatList
+                data={items}
+                numColumns={1}
+                renderItem={({ item }) => <ItemCard />}
+            />
+            <CartButton />
         </View>
     )
 }
