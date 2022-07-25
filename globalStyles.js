@@ -1,14 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const globalStyles = StyleSheet.create({
-    TopBar: {
-        flexDirection: "row",
-        justifyContent: 'flex-end',
-    },
-    NavItem: {
-        margin: 16,
-        fontSize: 18,
-    },
     AppTitle: {
         fontSize: 54,
         fontWeight: 'bold',
@@ -21,22 +13,26 @@ const globalStyles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingTop: 20,
         paddingHorizontal: 20,
+        backgroundColor: '#f2f2f2'
     },
     input: {
         marginTop: 10,
         borderWidth: 1,
         borderColor: 'lightgray',
-        padding: 10,
+        padding: 5,
         borderRadius: 10,
-        fontSize: 18,
+        fontSize: 14,
         alignSelf: 'stretch',
       },
       forgotPassword: {
         color: 'blue',
-        fontSize: 16,
+        fontSize: 14,
         textDecorationLine: 'underline',
         marginVertical: 15,
         textAlign: 'right',
+      },
+      AppBar: {
+        headerStyle: { backgroundColor: '#0080FF'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white'
       }
 })
 

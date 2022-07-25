@@ -6,10 +6,9 @@ import PackageCard from '../Components/PackageCard';
 
 const PackagesScreen = ({ navigation }) => {
     return (
-        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
                 <View style={{ flex: 1, justifyContent: 'center' }}>
-                    <ScrollView>
+                    <ScrollView showsVerticalScrollIndicator={false}>
                         <PackageCard navigation={navigation} />
                         <PackageCard navigation={navigation}/>
                         <PackageCard navigation={navigation}/>
@@ -18,7 +17,6 @@ const PackagesScreen = ({ navigation }) => {
                 </View>
                 <LoginSubscribeFooter text1='Already have account?' text2='Login' linkTo='Login' navigation={navigation} />
             </View>
-        </TouchableWithoutFeedback>
     )
 }
 

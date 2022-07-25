@@ -9,6 +9,7 @@ const SubscriptionForm = ({ navigation }) => {
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={globalStyles.body}>
                     <View style={{ flex: 1, justifyContent: 'flex-start' }}>
+                        <Text>Package: Basic</Text>
                         <TextInput style={globalStyles.input} placeholder="Enter full name" />
                         <TextInput style={globalStyles.input} placeholder="Enter email address" />
                         <TextInput keyboardType='numeric' style={globalStyles.input} placeholder="Enter Phone Number (i.e. 0123-1234567)" />

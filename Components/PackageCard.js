@@ -6,15 +6,15 @@ import { View } from "react-native";
 
 const PackageCard = ({navigation}) => {
     return(
-        <Surface
-        elevation={12}
-        category="large"
+        <View
         style={{
+            elevation: 8,
           justifyContent: "center",
           alignItems: "center",
-          padding: 5,
-          backgroundColor: 'pink',
+          padding: 10,
+          backgroundColor: '#9999ff',
           marginBottom: 18,
+          borderRadius: 25,
         }}
       >
         <Text style={styles.title}>Basic</Text>
@@ -24,7 +24,7 @@ const PackageCard = ({navigation}) => {
             <Button title='View Details' variant="text" onPress={() => navigation.navigate('Package Detail')}/>
             <Button title="Buy Now" onPress={() => navigation.navigate('Subscribe')} />
         </View>
-      </Surface>
+      </View>
     )
 }
 
