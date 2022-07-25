@@ -10,7 +10,7 @@ const Stack = createNativeStackNavigator();
 
 const MenuStack = ({ navigation }) => {
     return (
-        <Stack.Navigator screenOptions={{headerShown: true}}>
+        <Stack.Navigator screenOptions={globalStyles.AppBar}>
             <Stack.Screen name="Categories" component={CategoriesScreen}/>
             <Stack.Screen name="Items" component={ItemsScreen}/>
         </Stack.Navigator>

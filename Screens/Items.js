@@ -6,7 +6,7 @@ import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
 
 const ItemsScreen = ({ navigation }) => {
     return (
-        <View>
+        <View style={globalStyles.body}>
             <Text>This is Items Screen</Text>      
         </View>
     )
