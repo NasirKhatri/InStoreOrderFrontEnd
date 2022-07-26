@@ -32,7 +32,7 @@ const globalStyles = StyleSheet.create({
         textAlign: 'right',
       },
       AppBar: {
-        headerStyle: { backgroundColor: '#0080FF'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white'
+        headerStyle: { backgroundColor: '#0080FF'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white', headerTitleAlign: 'center'
       }
 })
 

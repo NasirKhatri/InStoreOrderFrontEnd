@@ -37,11 +37,10 @@ export function RoundButton({text}) {
   )
 }
 
-export function LogoutButton() {
-  const storeData = useContext(StoreContext);
+export function IconButton({name, onPress}) {
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-        <Icon name="logout" size={24} color="white" onPress={() => storeData.setLoggedIn(false)} />
+        <Icon name={name} size={24} color="white" onPress={onPress} />
     </IconComponentProvider>
 )
 }

@@ -21,7 +21,7 @@ export default function App() {
         {
           !isLoggedIn ? <LoginSubscribeStack /> :
             <Drawer.Navigator screenOptions={{ headerShown: false }}>
-              <Drawer.Screen name="Login" component={MenuStack} />
+              <Drawer.Screen name="Menu" component={MenuStack} />
             </Drawer.Navigator>
         }
       </NavigationContainer>
