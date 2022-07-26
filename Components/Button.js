@@ -1,5 +1,9 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
+import { IconComponentProvider, Icon } from "@react-native-material/core";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import { StoreContext } from '../App';
+import { useContext } from 'react';
 
 export function FlatButton({ text, onPress }) {
   return (
@@ -27,10 +31,19 @@ export function RoundButton({text}) {
   return (
     <TouchableOpacity>
     <View style={styles.Roundbutton}>
-      <Text style={{textAlign: 'center', color: 'white', paddingTop: 5, fontWeight: 'bold', fontSize: 14}}>{text}</Text>
+      <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 22}}>{text}</Text>
     </View>
   </TouchableOpacity>
   )
+}
+
+export function LogoutButton() {
+  const storeData = useContext(StoreContext);
+  return (
+    <IconComponentProvider IconComponent={MaterialCommunityIcons}>
+        <Icon name="logout" size={24} color="white" onPress={() => storeData.setLoggedIn(false)} />
+    </IconComponentProvider>
+)
 }
 
 const styles = StyleSheet.create({

@@ -3,8 +3,11 @@ import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react
 import globalStyles from '../globalStyles';
 import {FlatButton} from '../Components/Button.js';
 import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
+import { useContext } from 'react';
+import { StoreContext } from '../App';
 
 const LoginScreen = ({ navigation }) => {
+    const storeData = useContext(StoreContext);
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
@@ -13,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
                     <TextInput style={globalStyles.input} placeholder="Enter your email address" />
                     <TextInput style={globalStyles.input} placeholder="Enter your password" />
                     <Text style={globalStyles.forgotPassword}>Forgot Password?</Text>
-                    <FlatButton text='Login' />
+                    <FlatButton text='Login' onPress={() => storeData.setLoggedIn(true)} />
                 </View>
                 <LoginSubscribeFooter text1='Do not have account?' text2='Subscribe' linkTo='Packages' navigation={navigation} />
             </View>

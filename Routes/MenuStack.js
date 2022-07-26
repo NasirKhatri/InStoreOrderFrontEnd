@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Button } from '@react-native-material/core';
-import { IconComponentProvider, Icon } from "@react-native-material/core";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 import CategoriesScreen from '../Screens/Categories';
 import ItemsScreen from '../Screens/Items';
+import { LogoutButton } from '../Components/Button';
 
 import globalStyles from '../globalStyles';
 
@@ -16,9 +14,7 @@ const MenuStack = ({ navigation }) => {
         <Stack.Navigator screenOptions={{
             ...globalStyles.AppBar, headerRight: () => {
                 return (
-                    <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-                        <Icon name="logout" size={24} color="white" />
-                    </IconComponentProvider>
+                    <LogoutButton />
                 )
             }
         }}>
