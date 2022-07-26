@@ -15,7 +15,7 @@ const CategoryCard = ({ onPress }) => {
 
 const styles = StyleSheet.create({
     Box: {
-        backgroundColor: "white", borderRadius: 5, borderColor:'lightgray', paddingVertical: 4, paddingHorizontal: 1, justifyContent: 'space-between'
+        backgroundColor: "white", borderRadius: 5, borderColor:'lightgray', paddingVertical: 4, paddingHorizontal: 1, justifyContent: 'space-between', borderWidth: 2, elevation: 3
     },
     Title: {
         fontWeight: 'bold',

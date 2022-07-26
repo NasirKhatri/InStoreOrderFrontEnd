@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         justifyContent: 'space-between',
         flexDirection: 'row',
-        marginBottom: 15
+        marginBottom: 15,
+        borderWidth: 2, elevation: 3
     },
     Title: {
         fontWeight: 'bold',
