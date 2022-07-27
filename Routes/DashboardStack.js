@@ -2,16 +2,15 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext } from 'react';
 
-import CategoriesScreen from '../Screens/MenuScreens/Categories';
-import ItemsScreen from '../Screens/MenuScreens/Items';
 import { IconButton } from '../Components/Button';
+import DashboardScreen from '../Screens/DashboardScreens/Dashboard';
 import { StoreContext } from '../App';
 
 import globalStyles from '../globalStyles';
 
 const Stack = createNativeStackNavigator();
 
-const MenuStack = ({ navigation }) => {
+const DashboardStack = ({ navigation }) => {
     const storeData = useContext(StoreContext);
 
     const headerRight = () => <IconButton name="logout" onPress={() => storeData.setLoggedIn(false)} />
@@ -19,10 +18,9 @@ const MenuStack = ({ navigation }) => {
 
     return (
         <Stack.Navigator screenOptions={{...globalStyles.AppBar, headerRight}}>
-            <Stack.Screen name="Categories" component={CategoriesScreen} options={{headerLeft}}/>
-            <Stack.Screen name="Items" component={ItemsScreen} />
+            <Stack.Screen name="Dashboard" component={DashboardScreen} options={{headerLeft}}/>
         </Stack.Navigator>
     )
 }
 
-export default MenuStack;
+export default DashboardStack;
