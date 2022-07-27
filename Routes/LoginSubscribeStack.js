@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LoginScreen from '../Screens/Login';
-import PackagesScreen from '../Screens/Packages';
-import PackageDetail from '../Screens/PackageDetail';
-import SubscriptionForm from '../Screens/SubscriptionForm';
+import LoginScreen from '../Screens/LoginSubscribeScreens/Login';
+import PackagesScreen from '../Screens/LoginSubscribeScreens/Packages';
+import PackageDetail from '../Screens/LoginSubscribeScreens/PackageDetail';
+import SubscriptionForm from '../Screens/LoginSubscribeScreens/SubscriptionForm';
 
 import globalStyles from '../globalStyles';
 

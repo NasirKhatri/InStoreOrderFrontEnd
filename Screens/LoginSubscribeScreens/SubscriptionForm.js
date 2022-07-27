@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard, ScrollView } from 'react-native';
-import globalStyles from '../globalStyles';
-import {FlatButton} from '../Components/Button.js';
-import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
+import globalStyles from '../../globalStyles';
+import {FlatButton} from '../../Components/Button.js';
+import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
 
 const SubscriptionForm = ({ navigation }) => {
     return (

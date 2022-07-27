@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, TouchableWithoutFeedback, Keyboard, FlatList, ScrollView } from 'react-native';
-import globalStyles from '../globalStyles';
-import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
-import PackageCard from '../Components/PackageCard';
+import globalStyles from '../../globalStyles';
+import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
+import PackageCard from '../../Components/PackageCard';
 
 const PackagesScreen = ({ navigation }) => {
     return (

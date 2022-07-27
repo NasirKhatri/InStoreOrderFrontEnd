@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { View, Text } from 'react-native';
-import globalStyles from '../globalStyles';
-import { CartButton } from '../Components/Button.js';
-import ItemCard from '../Components/ItemCard';
+import globalStyles from '../../globalStyles';
+import { CartButton } from '../../Components/Button.js';
+import ItemCard from '../../Components/ItemCard';
 import { FlatList } from 'react-native';
 
 const ItemsScreen = ({ navigation }) => {

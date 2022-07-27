@@ -14,7 +14,7 @@ export const StoreContext = React.createContext();
 
 
 export default function App() {
-  const [isLoggedIn, setLoggedIn] = React.useState(true);
+  const [isLoggedIn, setLoggedIn] = React.useState(false);
   return (
     <StoreContext.Provider value={{ isLoggedin: isLoggedIn , setLoggedIn: setLoggedIn }}>
       <NavigationContainer>

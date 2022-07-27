@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, FlatList, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import globalStyles from '../globalStyles';
+import globalStyles from '../../globalStyles';
 
-import { CartButton } from '../Components/Button.js';
-import CategoryCard from '../Components/CategoryCard';
+import { CartButton } from '../../Components/Button.js';
+import CategoryCard from '../../Components/CategoryCard';
 
 
 const CategoriesScreen = ({ navigation }) => {

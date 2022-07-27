@@ -2,8 +2,8 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext } from 'react';
 
-import CategoriesScreen from '../Screens/Categories';
-import ItemsScreen from '../Screens/Items';
+import CategoriesScreen from '../Screens/MenuScreens/Categories';
+import ItemsScreen from '../Screens/MenuScreens/Items';
 import { IconButton } from '../Components/Button';
 import { StoreContext } from '../App';
 

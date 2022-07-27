@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import globalStyles from '../globalStyles';
-import {FlatButton} from '../Components/Button.js';
-import LoginSubscribeFooter from '../Components/LoginSubscribeFooter';
+import globalStyles from '../../globalStyles.js';
+import { FlatButton } from '../../Components/Button.js';
+import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
 import { useContext } from 'react';
-import { StoreContext } from '../App';
+import { StoreContext } from '../../App.js';
 
 const LoginScreen = ({ navigation }) => {
     const storeData = useContext(StoreContext);
