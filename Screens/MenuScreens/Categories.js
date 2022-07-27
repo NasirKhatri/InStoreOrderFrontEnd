@@ -28,7 +28,7 @@ const CategoriesScreen = ({ navigation }) => {
                     numColumns={3}
                     renderItem={({ item }) => <CategoryCard onPress={() => navigation.navigate('Items')} />}
                 />
-                <CartButton />
+                <CartButton text='View Cart' onPress={() => navigation.navigate('Cart')} />
         </View>
     )
 }

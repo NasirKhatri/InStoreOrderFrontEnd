@@ -2,8 +2,6 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { IconComponentProvider, Icon } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { StoreContext } from '../App';
-import { useContext } from 'react';
 
 export function FlatButton({ text, onPress }) {
   return (
@@ -15,12 +13,12 @@ export function FlatButton({ text, onPress }) {
   );
 }
 
-export function CartButton({onPress}) {
+export function CartButton({text, onPress}) {
   return (
     <TouchableOpacity  onPress={onPress}>
       <View style={styles.Cartbutton}>
         <Text style={styles.CartbuttonText}>Items 5</Text>
-        <Text style={styles.CartbuttonText}>View Cart</Text>
+        <Text style={styles.CartbuttonText}>{text}</Text>
         <Text style={styles.CartbuttonText}>Rs 10000</Text>
       </View>
     </TouchableOpacity>
@@ -37,10 +35,10 @@ export function RoundButton({text}) {
   )
 }
 
-export function IconButton({name, onPress}) {
+export function IconButton({name, onPress, color}) {
   return (
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
-        <Icon name={name} size={24} color="white" onPress={onPress} />
+        <Icon name={name} size={24} color={color ? color : 'white'} onPress={onPress} />
     </IconComponentProvider>
 )
 }

@@ -1,14 +1,18 @@
 import React from "react";
 import { Box } from "@react-native-material/core";
 import { Text, StyleSheet, Image, View } from "react-native";
-import { RoundButton } from "./Button";
+import { IconButton, RoundButton } from "./Button";
 
-const ItemCard = ({ onPress }) => {
+//type mean either item card is being displayed for 'items list (item Screen)' or 'cart items (cart screen)'  
+const ItemCard = ({ type, color }) => {
     return (
         <View style={styles.Box} >
             <Image style={styles.image} source={require('../assets/images/Sandwich.png')} />
             <View style={{ flex: 1, marginLeft: 16 }}>
-                <Text style={styles.Title}>Club Sandwitch Very Delicious 500 gm</Text>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={styles.Title}>Club Sandwitch Very Delicious 500 gm</Text>
+                    {type === 'cart' ? <IconButton name='delete' onPress={() => null} color='red' /> : <></>}
+                </View>
                 <Text>Delicious Club Sandwith 2 Person serving </Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-end' }}>
                     <RoundButton text='-' />

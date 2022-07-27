@@ -25,7 +25,7 @@ const ItemsScreen = ({ navigation }) => {
                 numColumns={1}
                 renderItem={({ item }) => <ItemCard />}
             />
-            <CartButton />
+            <CartButton text='View Cart' onPress={() => navigation.navigate('Cart')} />
         </View>
     )
 }

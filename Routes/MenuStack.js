@@ -4,6 +4,8 @@ import { useContext } from 'react';
 
 import CategoriesScreen from '../Screens/MenuScreens/Categories';
 import ItemsScreen from '../Screens/MenuScreens/Items';
+import CartScreen from '../Screens/MenuScreens/Cart';
+
 import { IconButton } from '../Components/Button';
 import { StoreContext } from '../App';
 
@@ -21,6 +23,7 @@ const MenuStack = ({ navigation }) => {
         <Stack.Navigator screenOptions={{...globalStyles.AppBar, headerRight}}>
             <Stack.Screen name="Categories" component={CategoriesScreen} options={{headerLeft}}/>
             <Stack.Screen name="Items" component={ItemsScreen} />
+            <Stack.Screen name="Cart" component={CartScreen} />
         </Stack.Navigator>
     )
 }
