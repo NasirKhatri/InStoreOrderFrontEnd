@@ -9,7 +9,7 @@ const ItemCard = ({ type, color }) => {
         <View style={styles.Box} >
             <Image style={styles.image} source={require('../assets/images/Sandwich.png')} />
             <View style={{ flex: 1, marginLeft: 16 }}>
-                <View style={{flexDirection: "row"}}>
+                <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
                     <Text style={styles.Title}>Club Sandwitch Very Delicious 500 gm</Text>
                     {type === 'cart' ? <IconButton name='delete' onPress={() => null} color='red' /> : <></>}
                 </View>
