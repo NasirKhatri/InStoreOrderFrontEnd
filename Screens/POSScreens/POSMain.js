@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { View, Text, TouchableOpacity, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, FlatList } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 import globalStyles from '../../globalStyles';
+
+import { POSButton1, POSButton2 } from '../../Components/Button';
 
 
 
@@ -33,26 +35,6 @@ const POSMainScreen = ({ navigation }) => {
         { key: '10', name: 'Burger', color: 'pink' },
     ];
 
-    const POSButton1 = ({ text, onPress }) => {
-        return (
-            <TouchableOpacity style={{ flex: 1 }} onPress={onPress}>
-                <View style={styles.CustomerTypeButton}>
-                    <Text style={styles.ButtonText}>{text}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
-
-    const POSButton2 = ({ item }) => {
-        const [opacity, setOpacity] = React.useState(1);
-        return (
-            <TouchableOpacity style={{ flex: 1/3 }}>
-                <View style={{ ...styles.CustomerTypeButton, backgroundColor: item.color }}>
-                    <Text style={{...styles.ButtonText, color: 'white', marginVertical: 12}}>{item.name}</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
 
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
@@ -102,17 +84,7 @@ const POSMainScreen = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    CustomerTypeButton: {
-        backgroundColor: 'lightblue',
-        marginHorizontal: 4,
-        padding: 6,
-        marginBottom: 6
-    },
-    ButtonText: {
-        fontWeight: 'bold',
-        textAlign: 'center',
-        fontSize: 14
-    },
+
     Section: {
         marginBottom: 8
     },

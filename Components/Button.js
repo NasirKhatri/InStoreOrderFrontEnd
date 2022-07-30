@@ -43,6 +43,26 @@ export function IconButton({name, onPress, color}) {
 )
 }
 
+export const POSButton1 = ({ text, onPress }) => {
+  return (
+      <TouchableOpacity style={{ flex: 1 }} onPress={onPress}>
+          <View style={styles.CustomerTypeButton}>
+              <Text style={styles.ButtonText}>{text}</Text>
+          </View>
+      </TouchableOpacity>
+  )
+}
+
+export const POSButton2 = ({ item }) => {
+  return (
+      <TouchableOpacity style={{ flex: 1/3 }}>
+          <View style={{ ...styles.CustomerTypeButton, backgroundColor: item.color }}>
+              <Text style={{...styles.ButtonText, color: 'white', marginVertical: 12}}>{item.name}</Text>
+          </View>
+      </TouchableOpacity>
+  )
+}
+
 const styles = StyleSheet.create({
   button: {
     borderRadius: 8,
@@ -80,5 +100,17 @@ const styles = StyleSheet.create({
     height: 32,
     borderRadius: 16,
     backgroundColor: 'blue'
-  }
+  },
+  CustomerTypeButton: {
+    backgroundColor: 'lightblue',
+    marginHorizontal: 4,
+    padding: 6,
+    marginBottom: 6
+},
+  ButtonText: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 14
+},
 });
+
