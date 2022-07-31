@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, KeyboardAvoidingView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { RadioButton } from 'react-native-paper';
@@ -101,6 +101,7 @@ const POSDetailScreen = ({navigation}) => {
             <FlatList
                 data={orderLines}
                 renderItem={({ item }) => <POSOrderline item={item} />}
+                removeClippedSubviews={false}
             />
             <InvoiceDetailsSection />
             <BottomButtonsSection navigation={navigation} />
