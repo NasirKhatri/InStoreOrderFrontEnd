@@ -77,7 +77,7 @@ const POSMainScreen = ({ navigation }) => {
             <View style={{ flexDirection: 'row' }}>
                 <POSButton1 text='Discard Sale' onPress={() => null} />
                 <POSButton1 text='Recall' onPress={() => null} />
-                <POSButton1 text='Pay' onPress={() => null} />
+                <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
             </View>
         </View>
     )

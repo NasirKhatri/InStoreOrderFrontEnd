@@ -8,6 +8,7 @@ import { StoreContext } from '../App';
 
 import POSMainScreen from '../Screens/POSScreens/POSMain';
 import POSDetailScreen from '../Screens/POSScreens/POSDetail';
+import POSPaymentScreen from '../Screens/POSScreens/POSPayment';
 
 import globalStyles from '../globalStyles';
 
@@ -23,6 +24,7 @@ const POSStack = ({ navigation }) => {
         <Stack.Navigator screenOptions={{...globalStyles.AppBar, headerRight}}>
             <Stack.Screen name="POSMain" component={POSMainScreen} options={{headerLeft}}/>
             <Stack.Screen name="POSDetail" component={POSDetailScreen}/>
+            <Stack.Screen name="POSPayment" component={POSPaymentScreen}/>
         </Stack.Navigator>
     )
 }

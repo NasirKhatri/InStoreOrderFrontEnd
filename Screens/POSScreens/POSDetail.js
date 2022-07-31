@@ -65,17 +65,17 @@ const InvoiceDetailsSection = () => {
     )
 }
 
-const BottomButtonsSection = () => {
+const BottomButtonsSection = ({navigation}) => {
     return (
         <View style={{ flexDirection: 'row' }}>
-            <POSButton1 text='Back' onPress={() => null} />
+            <POSButton1 text='Back' onPress={() => navigation.goBack()} />
             <POSButton1 text='Discard Sale' onPress={() => null} />
-            <POSButton1 text='Pay' onPress={() => null} />
+            <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
         </View>
     )
 }
 
-const POSDetailScreen = () => {
+const POSDetailScreen = ({navigation}) => {
     const orderLines = [
         { key: 1, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
         { key: 2, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
@@ -93,7 +93,7 @@ const POSDetailScreen = () => {
         { key: 14, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
         { key: 15, name: 'Club Sandwitch', qty: 2, price: 300, discount: 0, total: 500 },
     ]
-    
+
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
             <CustomerNoSection />
@@ -103,7 +103,7 @@ const POSDetailScreen = () => {
                 renderItem={({ item }) => <POSOrderline item={item} />}
             />
             <InvoiceDetailsSection />
-            <BottomButtonsSection />
+            <BottomButtonsSection navigation={navigation} />
         </View>
     )
 }
