@@ -1,14 +1,17 @@
 import * as React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, FlatList } from 'react-native';
+
+import KitchenOrder from '../../Components/KitchenOrder';
 
 import globalStyles from '../../globalStyles';
 
 const KitchenMainScreen = ({ navigation }) => {
+    const orders = [{key:1, type: 'Dine In', }, {key:2, type: 'Take Away', }, {key:3, type: 'Delivery', }]
     return (
         <View style={globalStyles.body}>
-            <Text>This is Kitchen Main Screen</Text>
-            <Button title='Details' onPress={() => navigation.navigate('Order Details')}/>
-            <Button title='Summary' onPress={() => navigation.navigate('Items Summary')}/>
+            <FlatList
+            data={orders}
+            renderItem={({ item }) => <KitchenOrder item={item} />} />
         </View>
     )
 }
