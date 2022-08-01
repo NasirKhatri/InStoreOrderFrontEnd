@@ -9,6 +9,7 @@ import LoginSubscribeStack from './Routes/LoginSubscribeStack';
 import DashboardStack from './Routes/DashboardStack';
 import MenuStack from './Routes/MenuStack';
 import POSStack from './Routes/POSStack';
+import KitchenStack from './Routes/KitchenStack';
 
 const Drawer = createDrawerNavigator();
 export const StoreContext = React.createContext();
@@ -25,6 +26,7 @@ export default function App() {
               <Drawer.Screen name="Dashboard" component={DashboardStack} />
               <Drawer.Screen name="Menu" component={MenuStack} />
               <Drawer.Screen name='POS' component={POSStack} />
+              <Drawer.Screen name='Kitchen' component={KitchenStack} />
             </Drawer.Navigator>
         }
       </NavigationContainer>
