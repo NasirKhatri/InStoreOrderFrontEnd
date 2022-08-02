@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { View, Text } from "react-native";
 import { IconButton } from "./Button";
 
-const KitchenOrder = ({item}) => {
+const KitchenOrder = ({item, navigation}) => {
 
     //Setting background color based on order type i.e. Dine in, take away or delivery
     let color = item.type == 'Dine In' ? 'lightblue' : item.type == 'Take Away' ? 'lightgreen' : 'orange';
@@ -23,7 +23,7 @@ const KitchenOrder = ({item}) => {
                 <Text>Items: 6</Text>
                 <Text>Qty: 8</Text>
                 <Text>Status</Text>
-                <Text>Details</Text>
+                <Text onPress={() => navigation.navigate('Order Details')}>Details</Text>
             </View>
         </View>
     )
