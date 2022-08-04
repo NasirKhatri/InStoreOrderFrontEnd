@@ -26,7 +26,7 @@ const DetailLine = ({ item }) => {
 
 const KitchenOrderDetailsScreen = ({ navigation }) => {
     const order = { key: 1, type: 'Dine In', }
-    const orderItems = [{ key: 1, item: 'Chest Broast', Qty: 25 }, { key: 3, item: 'Zinder Burger', Qty: 250 }, { key: 1, item: 'Zinder Burger with Cheese Spicy', Qty: 5 }]
+    const orderItems = [{ key: 1, item: 'Chest Broast', Qty: 25 }, { key: 2, item: 'Zinder Burger', Qty: 250 }, { key: 3, item: 'Zinder Burger with Cheese Spicy', Qty: 5 }]
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 8 }}>
             <View>
