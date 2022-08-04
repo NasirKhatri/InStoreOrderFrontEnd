@@ -18,7 +18,7 @@ const DashboardStack = ({ navigation }) => {
 
     return (
         <Stack.Navigator screenOptions={{...globalStyles.AppBar, headerRight}}>
-            <Stack.Screen name="Dashboard" component={DashboardScreen} options={{headerLeft}}/>
+            <Stack.Screen name="Dashboard Main" component={DashboardScreen} options={{headerLeft}}/>
         </Stack.Navigator>
     )
 }
