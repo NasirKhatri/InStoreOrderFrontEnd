@@ -3,9 +3,9 @@ import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native
 
 import globalStyles from "../../globalStyles";
 
-const Tab = ({ text }) => {
+const Tab = ({ text, onPress }) => {
     return (
-        <TouchableOpacity style={styles.box}>
+        <TouchableOpacity style={styles.box} onPress={onPress}>
             <View >
                 <Text style={styles.title}>{text}</Text>
             </View>
@@ -13,21 +13,23 @@ const Tab = ({ text }) => {
     )
 }
 
-const SettingsScreen = () => {
+const SettingsScreen = ({navigation}) => {
     const x = [
         { key: 1, text: 'Add Customer' },
         { key: 2, text: 'Add Category' },
         { key: 3, text: 'Add Item' },
         { key: 4, text: 'Add User' },
         { key: 5, text: 'Add Table' },
-        { key: 6, text: 'Add Rider' }
+        { key: 6, text: 'Add Rider' },
+        {key: 7, text: 'Add Tax Type'},
+        {key: 8, text: 'Add Branch'}
     ];
     return (
         <View style={globalStyles.body}>
             <FlatList
                 data={x}
                 numColumns={2}
-                renderItem={({ item }) => <Tab text={item.text} />} />
+                renderItem={({ item }) => <Tab text={item.text} onPress={() => navigation.navigate(item.text)} />} />
         </View>
     )
 }
