@@ -12,7 +12,7 @@ const DetailLine = ({ item }) => {
     return (
         <BouncyCheckbox
             size={30}
-            fillColor="blue"
+            fillColor="#0080FF"
             unfillColor="#FFFFFF"
             text={`${item.Qty}     ${item.item}`}
             iconStyle={{ borderColor: "red" }}

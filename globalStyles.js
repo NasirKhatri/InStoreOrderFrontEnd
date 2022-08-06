@@ -33,6 +33,12 @@ const globalStyles = StyleSheet.create({
       },
       AppBar: {
         headerStyle: { backgroundColor: '#0080FF'}, headerTitleStyle: {color: 'white'}, headerTintColor: 'white', headerTitleAlign: 'center'
+      },
+      Checkbox: {
+        marginRight: 15, borderColor: 'lightgray', borderRadius: 5
+      },
+      CheckedColor: {
+        color: '#0080FF',
       }
 })
 
