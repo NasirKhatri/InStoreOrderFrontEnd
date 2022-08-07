@@ -23,7 +23,7 @@ const POSMainScreen = ({ navigation }) => {
     ];
 
     const items = [
-        { key: '1', name: 'Burger and Burger', color: 'blue' },
+        { key: '1', name: 'Burger', color: 'blue' },
         { key: '2', name: 'Burger', color: 'darkgray' },
         { key: '3', name: 'Burger', color: 'green' },
         { key: '4', name: 'Burger', color: 'red' },

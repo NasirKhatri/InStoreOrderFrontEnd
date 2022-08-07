@@ -25,11 +25,13 @@ const SettingsScreen = ({navigation}) => {
         {key: 8, text: 'Add Branch'}
     ];
     return (
-        <View style={globalStyles.body}>
+        <View style={{...globalStyles.body, justifyContent: 'center'}}>
+            <View>
             <FlatList
                 data={x}
                 numColumns={2}
                 renderItem={({ item }) => <Tab text={item.text} onPress={() => navigation.navigate(item.text)} />} />
+        </View>
         </View>
     )
 }

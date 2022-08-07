@@ -56,8 +56,8 @@ export const POSButton1 = ({ text, onPress }) => {
 export const POSButton2 = ({ item }) => {
   return (
       <TouchableOpacity style={{ flex: 1/3 }}>
-          <View style={{ ...styles.CustomerTypeButton, backgroundColor: item.color }}>
-              <Text style={{...styles.ButtonText, color: 'white', marginVertical: 12}}>{item.name}</Text>
+          <View style={{ ...styles.CustomerTypeButton, backgroundColor: 'white', borderColor: 'lightgray', borderWidth: 1, borderTopColor: item.color, borderTopWidth: 10 }}>
+              <Text style={{...styles.ButtonText, color: 'black', marginVertical: 12}}>{item.name}</Text>
           </View>
       </TouchableOpacity>
   )

@@ -17,6 +17,18 @@ export const AddCustomer = () => {
                     <ScrollView>
                         <TextInput style={globalStyles.input} placeholder="Customer Name" />
                         <TextInput style={globalStyles.input} placeholder="Customer Gender" />
+                        <View style={{ ...globalStyles.input, paddingVertical: 0, }}>
+                            <Picker
+                                style={{ marginVertical: -7 }}
+                                mode='dropdown'
+                                selectedValue={gender}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setGender(itemValue)
+                                }>
+                                <Picker.Item label="Male" value="Male" />
+                                <Picker.Item label="Female" value="Female" />
+                            </Picker>
+                        </View>
                         <TextInput style={globalStyles.input} placeholder="Customer Address" />
                         <TextInput keyboardType='numeric' style={globalStyles.input} placeholder="Phone Number (i.e. 0123-1234567)" />
                         <TextInput style={globalStyles.input} placeholder="Customer Email" />

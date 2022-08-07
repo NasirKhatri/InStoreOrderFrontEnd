@@ -39,6 +39,9 @@ const globalStyles = StyleSheet.create({
       },
       CheckedColor: {
         color: '#0080FF',
+      },
+      UploadImage: {
+        width: 100, height: 100, borderRadius: 15, marginTop: 10
       }
 })
 
