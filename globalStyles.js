@@ -20,6 +20,7 @@ const globalStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'lightgray',
         padding: 5,
+        paddingLeft: 15,
         borderRadius: 10,
         fontSize: 14,
         alignSelf: 'stretch',

@@ -8,7 +8,7 @@ export const Dropdown = ({ value, setValue, data }) => {
     return (
         <View style={{ ...globalStyles.input, paddingVertical: 0, }}>
             <Picker
-                style={{ marginVertical: -7 }}
+                style={{ marginVertical: -7, marginLeft: -9 }}
                 mode='dropdown'
                 selectedValue={value}
                 onValueChange={(itemValue, itemIndex) =>
