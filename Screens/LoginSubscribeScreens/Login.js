@@ -8,7 +8,6 @@ import { StoreContext } from '../../App.js';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
-import { TouchableNativeFeedback } from 'react-native-web';
 
 const LoginSchema = Yup.object().shape({
     Email: Yup.string().email('Invalid Email').required('Required'),
@@ -47,9 +46,9 @@ const LoginScreen = ({ navigation }) => {
                                     onChangeText={handleChange('Password')}
                                     onBlur={handleBlur('Password')}
                                     value={values.Password} />
-                                { values.Password && touched.Password ? <Text style={{textAlignVertical: 'center'}} onPress={() => setIsPasswordSecure(!isPasswordSecure)}>{isPasswordSecure ? 'Show' : 'Hide'}</Text> : <></> }
+                                { values.Password ? <Text style={{textAlignVertical: 'center'}} onPress={() => setIsPasswordSecure(!isPasswordSecure)}>{isPasswordSecure ? 'Show' : 'Hide'}</Text> : <></> }
                             </View>
-                            {errors.Password ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Password' /></Text> : <></>}
+                            {errors.Password  && touched.Password ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Password' /></Text> : <></>}
                             <Text style={globalStyles.forgotPassword}>Forgot Password?</Text>
                             <FlatButton text='Login' onPress={handleSubmit} />
                         </View>
