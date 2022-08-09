@@ -97,7 +97,6 @@ const SubscriptionForm = ({ navigation }) => {
                     )}
                 </Formik>
                 <LoginSubscribeFooter text1='Already have account?' text2='Login' linkTo='Login' navigation={navigation} />
-
             </View>
         </TouchableWithoutFeedback>
     )
