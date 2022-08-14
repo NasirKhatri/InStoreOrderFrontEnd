@@ -27,8 +27,8 @@ const initialValues = {
 const ItemSchema = Yup.object().shape({
     Name: Yup.string().min(2, 'Too Short').max(20, 'Too Long').required('Required'),
     UOM: Yup.string().required('Required'),
-    SalesRate: Yup.number().required('Required'),
-    Discount: Yup.number().required('Required'),
+    SalesRate: Yup.number().moreThan(0, 'Must be greater than 0').required('Required'),
+    Discount: Yup.number().min(0, 'Must be greater than or equal to 0'),
     TaxType: Yup.string().required('Required'),
     Category: Yup.string().required('Required'),
 })
