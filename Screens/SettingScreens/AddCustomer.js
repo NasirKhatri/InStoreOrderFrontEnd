@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, Text, ScrollView, Keyboard } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Text, Keyboard } from 'react-native'
 
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
@@ -39,9 +39,6 @@ const addCustomerRequest = (values, actions) => {
 }
 
 export const AddCustomer = () => {
-    const [isChecked, setChecked] = React.useState(false);
-    const [gender, setGender] = React.useState('Male');
-
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
