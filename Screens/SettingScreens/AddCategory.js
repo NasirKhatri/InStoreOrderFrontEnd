@@ -20,18 +20,6 @@ const initialValues = {
     ImageInPOS: false,
 }
 
-export function checkIfFilesAreTooBig(image) {
-    let valid = true
-    if (image) {
-        const size = image.size / 1024 / 1024
-        if (size > 10) {
-            valid = false
-        }
-    }
-    return valid
-}
-
-
 const CategorySchema = Yup.object().shape({
     Name: Yup.string().min(2, 'Too Short').max(20, 'Too Long').required('Required'),
 })
