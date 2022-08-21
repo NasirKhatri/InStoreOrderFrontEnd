@@ -26,6 +26,12 @@ const globalStyles = StyleSheet.create({
         fontSize: 14,
         alignSelf: 'stretch',
       },
+      inputLabel: {
+        marginTop: 10,
+        marginLeft: 10,
+        fontWeight: "bold",
+
+      },
       PasswordContainer: {
         marginTop: 10,
         borderWidth: 1,

@@ -15,7 +15,7 @@ export const Dropdown = ({ value, setValue, data }) => {
                     setValue(itemValue)
                 }>
                 {
-                    data.map((item) => <Picker.Item label={item} value={item} />)
+                    data.map((item) => <Picker.Item label={item} value={item} key={item} />)
                 }
             </Picker>
         </View>

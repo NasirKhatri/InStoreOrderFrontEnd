@@ -84,9 +84,7 @@ export const AddItem = () => {
                                 <CheckBoxContainer value={values.VisibilityInPOS} name='VisibilityInPOS' setValue={setFieldValue} text="Display Item in POS" />
                                 <CheckBoxContainer value={values.ImageInPOS} name='ImageInPOS' setValue={setFieldValue} text="Display Image in POS (Not Recommended On Mobile Devices)" />
                             </KeyboardAwareScrollView>
-                            <View style={{ marginTop: 6 }}>
-                                <FlatButton text='Add Item' onPress={handleSubmit} />
-                            </View>
+                            <FlatButton text='Add Item' onPress={handleSubmit} />
                         </>
                     )}
                 </Formik>

@@ -6,7 +6,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 export function FlatButton({ text, onPress }) {
   return (
     <TouchableOpacity  onPress={onPress}>
-      <View style={styles.button}>
+      <View style={{...styles.button, marginTop: 10}}>
         <Text style={styles.buttonText}>{text}</Text>
       </View>
     </TouchableOpacity>
