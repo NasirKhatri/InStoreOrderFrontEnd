@@ -43,10 +43,6 @@ const addUserRequest = (values, actions) => {
 }
 
 export const AddUser = () => {
-    const [isChecked, setChecked] = React.useState(true);
-    const [gender, setGender] = React.useState('Male');
-    const [role, setRole] = React.useState('All');
-
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
