@@ -28,8 +28,6 @@ const addTaxTypeRequest = (values, actions) => {
 }
 
 export const AddTaxType = () => {
-    const [isChecked, setChecked] = React.useState(true);
-
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
