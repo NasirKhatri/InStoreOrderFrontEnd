@@ -48,37 +48,51 @@ export const AddItem = () => {
                 <Formik initialValues={initialValues} validationSchema={ItemSchema} onSubmit={(values, actions) => addItemRequest(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
-                            <KeyboardAwareScrollView>
+                            <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
+                                <Text style={globalStyles.inputLabel}>Item Name *</Text>
                                 <TextInput
                                     style={globalStyles.input} placeholder="Item Name"
                                     onChangeText={handleChange('Name')}
                                     onBlur={handleBlur('Name')}
                                     value={values.Name} />
                                 {errors.Name && touched.Name ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Name' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Related Category *</Text>
+                                <Dropdown value={values.Category} setValue={handleChange('Category')} data={['Burgers', 'Broasts']} />
+                                {errors.Category && touched.Category ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Category' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Unit of Measure *</Text>
                                 <Dropdown value={values.UOM} setValue={handleChange('UOM')} data={['Pc', 'Kg']} />
                                 {errors.UOM && touched.UOM ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='UOM' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Sales Price *</Text>
                                 <TextInput
                                     style={globalStyles.input} keyboardType="numeric" placeholder='Sales Rate (Exc. Taxes and Discount)'
                                     onChangeText={handleChange('SalesRate')}
                                     onBlur={handleBlur('SalesRate')}
                                     value={values.SalesRate} />
                                 {errors.SalesRate && touched.SalesRate ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='SalesRate' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Discount</Text>
                                 <TextInput
                                     style={globalStyles.input} keyboardType="numeric" placeholder='Discount (In %)'
                                     onChangeText={handleChange('Discount')}
                                     onBlur={handleBlur('Discount')}
                                     value={values.Discount} />
                                 {errors.Discount && touched.Discount ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Discount' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Tax Type *</Text>
                                 <Dropdown value={values.TaxType} setValue={handleChange('TaxType')} data={['Sales Tax', 'Service Tax']} />
                                 {errors.TaxType && touched.TaxType ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='TaxType' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Net Price</Text>
                                 {setNetPrice(Math.round(values.SalesRate * 1.17 - values.SalesRate * (values.Discount / 100)), 2)}
                                 <Text style={{ ...globalStyles.input, paddingVertical: 10 }}>{netPrice} (Inc. Taxes and Discount)</Text>
-                                <Dropdown value={values.Category} setValue={handleChange('Category')} data={['Burgers', 'Broasts']} />
-                                {errors.Category && touched.Category ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Category' /></Text> : <></>}
+
                                 <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                     {!values.Image ? <POSButton1 onPress={() => UploadImage(setFieldValue)} text='Select Image' /> : <></>}
                                     {values.Image ? <POSButton1 onPress={() => UploadImage(setFieldValue)} text='Change Image' /> : <></>}
-                                    {values.Image ? <POSButton1 onPress={() => setFieldValue('image', null)} text='Delete Image' /> : <></>}
+                                    {values.Image ? <POSButton1 onPress={() => setFieldValue('Image', null)} text='Delete Image' /> : <></>}
                                 </View>
                                 {values.Image && <Image source={{ uri: values.Image.uri }} style={globalStyles.UploadImage} />}
                                 <CheckBoxContainer value={values.VisibilityInPOS} name='VisibilityInPOS' setValue={setFieldValue} text="Display Item in POS" />

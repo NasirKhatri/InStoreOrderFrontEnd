@@ -5,6 +5,8 @@ import { UploadImage } from '../../SharedFunctions.js/UploadImage';
 import { FlatButton, POSButton1 } from '../../Components/Button';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 
@@ -37,18 +39,23 @@ export const AddCategory = () => {
                 <Formik initialValues={initialValues} validationSchema={CategorySchema} onSubmit={(values, actions) => addCategoryRequest(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
-                            <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                                <TextInput 
-                                    style={globalStyles.input} placeholder="Category Name" 
+                            <KeyboardAwareScrollView>
+                                <Text style={globalStyles.inputLabel}>Category Name *</Text>
+                                <TextInput
+                                    style={globalStyles.input} placeholder="Category Name"
                                     onChangeText={handleChange('Name')}
                                     onBlur={handleBlur('Name')}
-                                    value={values.Name}/>
-                                {errors.Name && touched.Name ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Name' /></Text> : <></>}    
-                                <TextInput 
-                                    style={globalStyles.input} placeholder="Show in Branches" 
+                                    value={values.Name} />
+                                {errors.Name && touched.Name ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Name' /></Text> : <></>}
+
+                                <Text style={globalStyles.inputLabel}>Show In Branches</Text>
+                                <TextInput
+                                    style={globalStyles.input} placeholder="Show in Branches"
                                     onChangeText={handleChange('Branches')}
                                     onBlur={handleBlur('Branches')}
-                                    value={values.Branches}/>
+                                    value={values.Branches} />
+
+                                <Text style={globalStyles.inputLabel}>Category Color</Text>
                                 <Dropdown value={values.Color} setValue={handleChange('Color')} data={['Red', 'Green', 'Orange', 'Pink', 'Black']} />
                                 <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                     {!values.Image ? <POSButton1 onPress={() => UploadImage(setFieldValue)} text='Select Image' /> : <></>}
@@ -57,8 +64,8 @@ export const AddCategory = () => {
                                 </View>
                                 {values.Image && <Image source={{ uri: values.Image.uri }} style={globalStyles.UploadImage} />}
                                 <CheckBoxContainer value={values.VisibilityInPOS} name='VisibilityInPOS' setValue={setFieldValue} text="Display Category in POS" />
-                                <CheckBoxContainer value={values.ImageInPOS} name='ImageInPOS'  setValue={setFieldValue} text="Display Image in POS (Not Recommended On Mobile Devices)" />
-                            </View>
+                                <CheckBoxContainer value={values.ImageInPOS} name='ImageInPOS' setValue={setFieldValue} text="Display Image in POS (Not Recommended On Mobile Devices)" />
+                            </KeyboardAwareScrollView>
                             <FlatButton text='Add Category' onPress={handleSubmit} />
                         </>
                     )}

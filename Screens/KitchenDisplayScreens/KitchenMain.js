@@ -11,7 +11,7 @@ const KitchenMainScreen = ({ navigation }) => {
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 8 }}>
             <View>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', marginBottom: 12 }}>
                     <POSButton1 text='Dine In' />
                     <POSButton1 text='TakeAway' />
                     <POSButton1 text='Delivery' />
