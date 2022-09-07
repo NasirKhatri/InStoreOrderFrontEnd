@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useMutation } from '@tanstack/react-query';
 
 import globalStyles from '../../globalStyles';
 import { FlatButton } from '../../Components/Button.js';
@@ -9,6 +10,7 @@ import { Dropdown } from '../../Components/Dropdown';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 const SubscriptionSchema = Yup.object().shape({
     Name: Yup.string().min(2, 'Too Short').max(20, 'Too Long').required('Required'),
@@ -37,20 +39,36 @@ const initialValues = {
     Voucher: '',
 }
 
-const userSubscription = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+const  userSubscription = async (values, actions) => {
 
+    try {
+        const result = await axios.post("http://192.168.8.103:3000/subscribe", values);
+        return {
+            msg: result.data.msg,
+            status: result.status
+        };
+    }
+
+    catch(err) {
+        return {
+            msg: err.response.data.msg,
+            status: err.response.status
+        };
+    }
 }
+
+// actions.resetform();
 
 const SubscriptionForm = ({ navigation }) => {
     const [passwordSecure, setPasswordSecure] = React.useState(true);
     const [retypePasswordSecure, setRetypePasswordSecure] = React.useState(true);
+    const mutation = useMutation((values, actions) => userSubscription(values, actions));
+    console.log(mutation);
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
-                <Formik initialValues={initialValues} validationSchema={SubscriptionSchema} onSubmit={(values, actions) => userSubscription(values, actions)}>
+                <Formik initialValues={initialValues} validationSchema={SubscriptionSchema} onSubmit={(values, actions) => mutation.mutate(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                         <View style={{ flex: 1, justifyContent: 'flex-start' }}>
                             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
