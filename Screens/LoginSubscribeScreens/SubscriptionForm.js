@@ -7,6 +7,7 @@ import globalStyles from '../../globalStyles';
 import { FlatButton } from '../../Components/Button.js';
 import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
 import { Dropdown } from '../../Components/Dropdown';
+import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
@@ -43,7 +44,7 @@ const initialValues = {
 const userSubscription = async (values) => {
 
     try {
-        const result = await axios.post("http://192.168.8.103:3000/subscribe", values);
+        const result = await axios.post(`${BaseUrl}/subscribe`, values);
         return {
             msg: result.data.msg,
             status: result.status
@@ -172,8 +173,8 @@ const SubscriptionForm = ({ navigation }) => {
                 </Formik>
                 {
                     mutation.isLoading ? <Text>Loading....</Text> :
-                        mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
-                            mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                        mutation.isError ? Alert.alert('Instore Order', mutation.data.msg ? mutation.data.msg : "Something went wrong, Try Again") :
+                            mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg ? mutation.data.msg : "Something went wrong, Try Again") : null
                 }
                 <LoginSubscribeFooter text1='Already have account?' text2='Login' linkTo='Login' navigation={navigation} />
             </View>

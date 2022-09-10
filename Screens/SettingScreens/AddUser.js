@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { FlatButton } from '../../Components/Button'
@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import axios from 'axios';
 
 import globalStyles from '../../globalStyles'
+import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 const initialValues = {
     Name: '',
@@ -44,25 +45,36 @@ const addUserRequest = async (values) => {
 
     try {
         const user = await getData('user');
-        if(user != null) {
+        if (user != null) {
             const token = user.Token;
-            const requestBody = {...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID}
-            console.log(requestBody, token);
+            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
+            const result = await axios.post(`${BaseUrl}/users/adduser`, requestBody, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            return {
+                msg: result.data.msg,
+                status: result.status
+            };
         }
         else {
-            console.log('No User');
+            return;
         }
     }
 
-    catch(err) {
-        console.log('Somethin went wrong');
+    catch (err) {
+        return {
+            msg: err.response.data.msg ? err.response.data.msg : null,
+            status: err.response.status ? err.response.status : null
+        };
     }
 }
 
 export const AddUser = () => {
     const mutation = useMutation((values) => addUserRequest(values));
-    const roles = [{name: "Admin", id: '1'}, {name: "All", id: '2'}, {name: "Cook", id: '3'}, {name: "Cashier", id: '4'},
-    {name: "Waiter", id: '5'}, {name: "Cook & Cashier", id: '6'}, {name: "Cook & Cashier", id: '7'}, {name: "Waiter & Cashier", id: '8'} ]
+    const roles = [{ name: "Admin", id: '1' }, { name: "All", id: '2' }, { name: "Cook", id: '3' }, { name: "Cashier", id: '4' },
+    { name: "Waiter", id: '5' }, { name: "Cook & Cashier", id: '6' }, { name: "Cook & Cashier", id: '7' }, { name: "Waiter & Cashier", id: '8' }]
 
     const handleSubmit = (values, actions) => {
         mutation.mutateAsync(values);
@@ -78,7 +90,7 @@ export const AddUser = () => {
                             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
 
                                 <Text style={globalStyles.inputLabel}>Name *</Text>
-                                <TextInput 
+                                <TextInput
                                     style={globalStyles.input} placeholder="User Name"
                                     onChangeText={handleChange('Name')}
                                     onBlur={handleBlur('Name')}
@@ -94,15 +106,15 @@ export const AddUser = () => {
                                 {errors.UserRole && touched.UserRole ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='UserRole' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Email *</Text>
-                                <TextInput 
-                                    style={globalStyles.input} placeholder="User Email" 
+                                <TextInput
+                                    style={globalStyles.input} placeholder="User Email"
                                     onChangeText={handleChange('Email')}
                                     onBlur={handleBlur('Email')}
-                                    value={values.Email}/>
+                                    value={values.Email} />
                                 {errors.Email && touched.Email ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Email' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Password *</Text>
-                                <TextInput 
+                                <TextInput
                                     style={globalStyles.input} placeholder="Password"
                                     onChangeText={handleChange('Password')}
                                     onBlur={handleBlur('Password')}
@@ -110,7 +122,7 @@ export const AddUser = () => {
                                 {errors.Password && touched.Password ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Password' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Contact Number *</Text>
-                                <TextInput 
+                                <TextInput
                                     keyboardType='numeric' style={globalStyles.input} placeholder="Phone Number (i.e. 0123-1234567)"
                                     onChangeText={handleChange('ContactNumber')}
                                     onBlur={handleBlur('ContactNumber')}
@@ -118,7 +130,7 @@ export const AddUser = () => {
                                 {errors.ContactNumber && touched.ContactNumber ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='ContactNumber' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Address</Text>
-                                <TextInput 
+                                <TextInput
                                     style={globalStyles.input} placeholder="User Address"
                                     onChangeText={handleChange('Address')}
                                     onBlur={handleBlur('Address')}
@@ -126,7 +138,7 @@ export const AddUser = () => {
                                 {errors.Address && touched.Address ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Address' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Date of Birth</Text>
-                                <TextInput 
+                                <TextInput
                                     style={globalStyles.input} placeholder="Date of Birth"
                                     onChangeText={handleChange('DOB')}
                                     onBlur={handleBlur('DOB')}
@@ -134,7 +146,7 @@ export const AddUser = () => {
                                 {errors.DOB && touched.DOB ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='DOB' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>CNIC Number</Text>
-                                <TextInput 
+                                <TextInput
                                     style={globalStyles.input} placeholder="User CNIC"
                                     onChangeText={handleChange('CNIC')}
                                     onBlur={handleBlur('CNIC')}
@@ -143,10 +155,14 @@ export const AddUser = () => {
 
                                 <CheckBoxContainer value={values.Active} name='Active' setValue={setFieldValue} text="Active" />
                             </KeyboardAwareScrollView>
-                            <FlatButton text='Add User' onPress={handleSubmit} />
+                            <FlatButton text={mutation.isLoading ? 'Loading...' : 'Add User'} onPress={handleSubmit} />
                         </>
                     )}
                 </Formik>
+                {
+                    mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
+                        mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                }
             </View>
         </TouchableWithoutFeedback>
     )

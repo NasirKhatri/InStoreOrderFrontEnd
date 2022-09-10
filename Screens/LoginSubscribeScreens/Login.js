@@ -6,6 +6,7 @@ import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
 import { useContext } from 'react';
 import { StoreContext } from '../../SharedFunctions.js/StoreContext.js';
 import { setData, getData } from '../../SharedFunctions.js/SetGetData.js';
+import { BaseUrl } from '../../SharedFunctions.js/StoreContext.js';
 
 import { useMutation } from '@tanstack/react-query';
 
@@ -25,7 +26,7 @@ const initialValues = {
 
 const userLogin = async (values) => {
     try {
-        const result = await axios.post("http://192.168.8.100:3000/login", values);
+        const result = await axios.post(`${BaseUrl}/login`, values);
         await setData('user', result.data);
 
         return {
@@ -76,7 +77,7 @@ const LoginScreen = ({ navigation }) => {
                             </View>
                             {errors.Password  && touched.Password ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Password' /></Text> : <></>}
                             <Text style={globalStyles.forgotPassword}>Forgot Password?</Text>
-                            {mutation.isSuccess && mutation.data.status !== 200 ? <Text>{mutation.data.data.msg}</Text> : null}
+                            {mutation.isSuccess && mutation.data.status !== 200 ? <Text>{mutation.data.data.msg ? mutation.data.data.msg : 'Something went wrong, Try Again'}</Text> : null}
                             {mutation.isLoading ? <Text>Loading...</Text> : null}
                             <FlatButton text='Login' onPress={handleSubmit} />
                         </View>
