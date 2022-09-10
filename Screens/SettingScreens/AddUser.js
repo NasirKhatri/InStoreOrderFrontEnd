@@ -5,16 +5,20 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
+import { setData, getData } from '../../SharedFunctions.js/SetGetData.js';
+
+import { useMutation } from '@tanstack/react-query';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 import globalStyles from '../../globalStyles'
 
 const initialValues = {
     Name: '',
     Gender: 'Male',
-    UserRole: 'All',
+    UserRole: '2',
     Email: '',
     Password: '',
     ContactNumber: '',
@@ -36,17 +40,39 @@ const UserSchema = Yup.object().shape({
     CNIC: Yup.string().matches(/[0-9]{5}-[0-9]{7}-[0-9]{1}/, 'Invalid CNIC No'),
 })
 
-const addUserRequest = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+const addUserRequest = async (values) => {
 
+    try {
+        const user = await getData('user');
+        if(user != null) {
+            const token = user.Token;
+            const requestBody = {...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID}
+            console.log(requestBody, token);
+        }
+        else {
+            console.log('No User');
+        }
+    }
+
+    catch(err) {
+        console.log('Somethin went wrong');
+    }
 }
 
 export const AddUser = () => {
+    const mutation = useMutation((values) => addUserRequest(values));
+    const roles = [{name: "Admin", id: '1'}, {name: "All", id: '2'}, {name: "Cook", id: '3'}, {name: "Cashier", id: '4'},
+    {name: "Waiter", id: '5'}, {name: "Cook & Cashier", id: '6'}, {name: "Cook & Cashier", id: '7'}, {name: "Waiter & Cashier", id: '8'} ]
+
+    const handleSubmit = (values, actions) => {
+        mutation.mutateAsync(values);
+        actions.resetForm();
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
-                <Formik initialValues={initialValues} validationSchema={UserSchema} onSubmit={(values, actions) => addUserRequest(values, actions)}>
+                <Formik initialValues={initialValues} validationSchema={UserSchema} onSubmit={(values, actions) => handleSubmit(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
                             <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -64,7 +90,7 @@ export const AddUser = () => {
                                 {errors.Gender && touched.Gender ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Gender' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>User Role *</Text>
-                                <Dropdown value={values.UserRole} setValue={handleChange('UserRole')} data={['Admin', 'Cook', 'Cashier', 'Waiter', 'Cook & Cashier', 'Cook & Waiter', 'Waiter & Cashier', 'All']} />
+                                <Dropdown value={values.UserRole} setValue={handleChange('UserRole')} data={roles} />
                                 {errors.UserRole && touched.UserRole ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='UserRole' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Email *</Text>
