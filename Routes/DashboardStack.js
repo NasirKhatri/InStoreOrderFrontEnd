@@ -7,13 +7,14 @@ import DashboardScreen from '../Screens/DashboardScreens/Dashboard';
 import { StoreContext } from '../App';
 
 import globalStyles from '../globalStyles';
+import { HandleLogout } from '../SharedFunctions.js/HandleLogout';
 
 const Stack = createNativeStackNavigator();
 
 const DashboardStack = ({ navigation }) => {
     const storeData = useContext(StoreContext);
 
-    const headerRight = () => <IconButton name="logout" onPress={() => storeData.setLoggedIn(false)} />
+    const headerRight = () => <IconButton name="logout" onPress={() => HandleLogout(storeData.setLoggedIn)} />
     const headerLeft = () => <IconButton name="menu" onPress={() => navigation.toggleDrawer()} />
 
     return (
