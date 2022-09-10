@@ -7,7 +7,7 @@ import ItemsScreen from '../Screens/MenuScreens/Items';
 import CartScreen from '../Screens/MenuScreens/Cart';
 
 import { IconButton } from '../Components/Button';
-import { StoreContext } from '../App';
+import { StoreContext } from '../SharedFunctions.js/StoreContext';
 
 import globalStyles from '../globalStyles';
 import { HandleLogout } from '../SharedFunctions.js/HandleLogout';

@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { IconButton } from '../Components/Button';
 import DashboardScreen from '../Screens/DashboardScreens/Dashboard';
-import { StoreContext } from '../App';
+import { StoreContext } from '../SharedFunctions.js/StoreContext';
 
 import globalStyles from '../globalStyles';
 import { HandleLogout } from '../SharedFunctions.js/HandleLogout';

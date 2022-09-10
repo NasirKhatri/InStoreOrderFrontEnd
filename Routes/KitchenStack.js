@@ -8,7 +8,7 @@ import KitchenMainScreen from '../Screens/KitchenDisplayScreens/KitchenMain';
 import KitchenOrderDetailsScreen from '../Screens/KitchenDisplayScreens/KitchenOrderDetails';
 import KitchenItemWiseScreen from '../Screens/KitchenDisplayScreens/KitchenItemWise';
 
-import { StoreContext } from '../App';
+import { StoreContext } from '../SharedFunctions.js/StoreContext';
 
 import globalStyles from '../globalStyles';
 import { HandleLogout } from '../SharedFunctions.js/HandleLogout';

@@ -4,7 +4,7 @@ import globalStyles from '../../globalStyles.js';
 import { FlatButton } from '../../Components/Button.js';
 import LoginSubscribeFooter from '../../Components/LoginSubscribeFooter';
 import { useContext } from 'react';
-import { StoreContext } from '../../App.js';
+import { StoreContext } from '../../SharedFunctions.js/StoreContext.js';
 import { setData, getData } from '../../SharedFunctions.js/SetGetData.js';
 
 import { useMutation } from '@tanstack/react-query';

@@ -4,7 +4,7 @@ import { useContext } from 'react';
 
 import { IconButton } from '../Components/Button';
 
-import { StoreContext } from '../App';
+import { StoreContext } from '../SharedFunctions.js/StoreContext';
 
 import POSMainScreen from '../Screens/POSScreens/POSMain';
 import POSDetailScreen from '../Screens/POSScreens/POSDetail';

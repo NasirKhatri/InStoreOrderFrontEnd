@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useContext } from 'react';
 
-import { StoreContext } from '../App';
+import { StoreContext } from '../SharedFunctions.js/StoreContext';
 
 import SettingsScreen from '../Screens/SettingScreens/Settings';
 import { AddCategory } from '../Screens/SettingScreens/AddCategory';
