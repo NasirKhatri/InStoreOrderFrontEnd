@@ -1,13 +1,17 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { FlatButton } from '../../Components/Button'
+import { getData } from '../../SharedFunctions.js/SetGetData.js';
+import { useMutation } from '@tanstack/react-query';
 
 import globalStyles from '../../globalStyles'
+import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 const initialValues = {
     BranchName: '',
@@ -23,18 +27,48 @@ const BranchSchema = Yup.object().shape({
 
 })
 
-const addBranchRequest = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+const addBranchRequest = async (values) => {
+    try {
+        const user = await getData('user');
+        if (user != null) {
+            const token = user.Token;
+            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
+            const result = await axios.post(`${BaseUrl}/branches/addbranch`, requestBody, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            return {
+                msg: result.data.msg,
+                status: result.status
+            };
+        }
+        else {
+            return;
+        }
+    }
+
+    catch (err) {
+        return {
+            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
+            status: err.response.status ? err.response.status : 500
+        };
+    }
 
 }
 
 export const AddBranch = () => {
+    const mutation = useMutation((values) => addBranchRequest(values));
+
+    const handleSubmit = (values, actions) => {
+        mutation.mutateAsync(values);
+        actions.resetForm();
+    }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
-                <Formik initialValues={initialValues} validationSchema={BranchSchema} onSubmit={(values, actions) => addBranchRequest(values, actions)}>
+                <Formik initialValues={initialValues} validationSchema={BranchSchema} onSubmit={(values, actions) => handleSubmit(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
                             <KeyboardAwareScrollView>
@@ -62,10 +96,14 @@ export const AddBranch = () => {
                                     value={values.ContactNumber} />
                                 {errors.ContactNumber && touched.ContactNumber ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='ContactNumber' /></Text> : <></>}
                             </KeyboardAwareScrollView>
-                            <FlatButton text='Add Branch' onPress={handleSubmit} />
+                            <FlatButton text={mutation.isLoading ? 'Loading...' : 'Add Branch'} onPress={handleSubmit} />
                         </>
                     )}
                 </Formik>
+                {
+                    mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
+                        mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                }
             </View>
         </TouchableWithoutFeedback>
     )

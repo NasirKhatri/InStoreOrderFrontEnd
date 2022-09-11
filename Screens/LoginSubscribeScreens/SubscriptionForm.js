@@ -53,8 +53,8 @@ const userSubscription = async (values) => {
 
     catch (err) {
         return {
-            msg: err.response.data.msg,
-            status: err.response.status
+            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
+            status: err.response.status ? err.response.status : 500
         };
     }
 }

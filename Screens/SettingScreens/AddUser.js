@@ -65,8 +65,8 @@ const addUserRequest = async (values) => {
 
     catch (err) {
         return {
-            msg: err.response.data.msg ? err.response.data.msg : null,
-            status: err.response.status ? err.response.status : null
+            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
+            status: err.response.status ? err.response.status : 500
         };
     }
 }
