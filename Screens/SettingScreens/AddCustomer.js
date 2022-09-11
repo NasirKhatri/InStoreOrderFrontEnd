@@ -1,15 +1,19 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, Text, Keyboard } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Text, Keyboard, Alert } from 'react-native'
 
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useMutation } from '@tanstack/react-query';
+import { getData } from '../../SharedFunctions.js/SetGetData.js';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
+import axios from 'axios';
 
 import globalStyles from '../../globalStyles'
+import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 const initialValues = {
     Name: '',
@@ -32,17 +36,47 @@ const CustomerSchema = Yup.object().shape({
     CNIC: Yup.string().matches(/[0-9]{5}-[0-9]{7}-[0-9]{1}/, 'Invalid CNIC No'),
 })
 
-const addCustomerRequest = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+const addCustomerRequest = async (values) => {
+    try {
+        const user = await getData('user');
+        if (user != null) {
+            const token = user.Token;
+            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
+            const result = await axios.post(`${BaseUrl}/customers/addcustomer`, requestBody, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            return {
+                msg: result.data.msg,
+                status: result.status
+            };
+        }
+        else {
+            return;
+        }
+    }
 
+    catch (err) {
+        return {
+            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
+            status: err.response.status ? err.response.status : 500
+        };
+    }
 }
 
 export const AddCustomer = () => {
+    const mutation = useMutation((values) => addCustomerRequest(values));
+
+    const handleSubmit = (values, actions) => {
+        mutation.mutateAsync(values);
+        actions.resetForm();
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
-                <Formik initialValues={initialValues} validationSchema={CustomerSchema} onSubmit={(values, actions) => addCustomerRequest(values, actions)}>
+                <Formik initialValues={initialValues} validationSchema={CustomerSchema} onSubmit={(values, actions) => handleSubmit(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
                                 <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
@@ -91,7 +125,7 @@ export const AddCustomer = () => {
 
                                     <Text style={globalStyles.inputLabel}>CNIC</Text>
                                     <TextInput 
-                                        style={globalStyles.input} placeholder="Customer CNIC" 
+                                        keyboardType='numeric' style={globalStyles.input} placeholder="Customer CNIC" 
                                         onChangeText={handleChange('CNIC')}
                                         onBlur={handleBlur('CNIC')}
                                         value={values.CNIC}/>
@@ -99,10 +133,14 @@ export const AddCustomer = () => {
 
                                     <CheckBoxContainer value={values.CreditCustomer} name='CreditCustomer' setValue={setFieldValue} text="Credit Customer" />
                                 </KeyboardAwareScrollView>
-                            <FlatButton text='Add Customer' onPress={handleSubmit} />
+                            <FlatButton text={mutation.isLoading ? 'Loading...' : 'Add Customer'} onPress={handleSubmit} />
                         </>
                     )}
                 </Formik>
+                {
+                    mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
+                        mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                }
             </View>
         </TouchableWithoutFeedback>
     )
