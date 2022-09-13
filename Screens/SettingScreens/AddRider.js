@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Alert, Keyboard, Text } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useMutation } from '@tanstack/react-query';
 
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
@@ -43,28 +44,60 @@ const getBranches = async () => {
     return data.data;
 }
 
-const addRiderRequest = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
+const addRiderRequest = async (values) => {
+    try {
+        const user = await getData('user');
+        if (user != null) {
+            const token = user.Token;
+            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
+            const result = await axios.post(`${BaseUrl}/riders/addrider`, requestBody, {
+                headers: {
+                    authorization: `Bearer ${token}`
+                }
+            })
+            return {
+                msg: result.data.msg,
+                status: result.status
+            };
+        }
+        else {
+            return;
+        }
+    }
+
+    catch (err) {
+        return {
+            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
+            status: err.response.status ? err.response.status : 500
+        };
+    }
 
 }
 
 export const AddRider = () => {
-    const { isLoading, data } = useQuery(['branches'], getBranches);
+    const { isLoading: bloading, data: bdata } = useQuery(['branches'], getBranches);
+    const mutation = useMutation((values) => addRiderRequest(values));
+
+    const handleSubmit = (values, actions) => {
+        mutation.mutateAsync(values);
+        actions.resetForm();
+    }
+
     let branches = [];
-    if (!isLoading) {
-        initialValues.Branch = (data[0].BranchID).toString();
-        data.forEach(element => {
+    if (!bloading) {
+        initialValues.Branch = (bdata[0].BranchID).toString();
+        bdata.forEach(element => {
             branches.push({
                 name: element.BranchName,
                 id: `${element.BranchID}`
             });
         });
+    }
 
         return (
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={globalStyles.body}>
-                    <Formik initialValues={initialValues} validationSchema={UserSchema} onSubmit={(values, actions) => addRiderRequest(values, actions)}>
+                    <Formik initialValues={initialValues} validationSchema={UserSchema} onSubmit={(values, actions) => handleSubmit(values, actions)}>
                         {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                             <>
                                 <KeyboardAwareScrollView>
@@ -93,17 +126,20 @@ export const AddRider = () => {
                                     {errors.ContactNumber && touched.ContactNumber ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='ContactNumber' /></Text> : <></>}
 
                                     <Text style={globalStyles.inputLabel}>Branch *</Text>
-                                    <Dropdown value={values.Branch} setValue={handleChange('Branch')} data={branches} />
+                                    <Dropdown value={values.Branch} setValue={handleChange('Branch')} data={!bloading ? branches : []} />
                                     {errors.Branch && touched.Branch ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Branch' /></Text> : <></>}
 
                                     <CheckBoxContainer value={values.Active} name="Active" setValue={setFieldValue} text="Active" />
                                 </KeyboardAwareScrollView>
-                                <FlatButton text='Add Rider' onPress={handleSubmit} />
+                                <FlatButton text={mutation.isLoading ? 'Loading...' : 'Add Rider'} onPress={handleSubmit} />
                             </>
                         )}
                     </Formik>
+                    {
+                        mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
+                            mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                    }
                 </View>
             </TouchableWithoutFeedback>
         )
-    }
 }
