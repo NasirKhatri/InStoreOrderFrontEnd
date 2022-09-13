@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
+import { getBranches } from '../../SharedFunctions.js/GetBranches';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
@@ -30,19 +31,6 @@ const UserSchema = Yup.object().shape({
     Branch: Yup.string().required('Required'),
     ContactNumber: Yup.string().matches(/[0-9]{4}-[0-9]{7}/, 'Invalid Phone No').required('Required'),
 })
-
-const getBranches = async () => {
-    const user = await getData('user');
-    const token = user.Token;
-    const url = `${BaseUrl}/branches/${user.ClientID}`;
-    const data = await axios.get(url, {
-        headers: {
-            authorization: `Bearer ${token}`,
-
-        }
-    });
-    return data.data;
-}
 
 const addRiderRequest = async (values) => {
     try {
@@ -75,7 +63,7 @@ const addRiderRequest = async (values) => {
 }
 
 export const AddRider = () => {
-    const { isLoading: bloading, data: bdata } = useQuery(['branches'], getBranches);
+    const { isLoading: bloading, data: bdata } = useQuery(['branches'], () => getBranches('dropdown'));
     const mutation = useMutation((values) => addRiderRequest(values));
 
     const handleSubmit = (values, actions) => {
@@ -83,15 +71,8 @@ export const AddRider = () => {
         actions.resetForm();
     }
 
-    let branches = [];
     if (!bloading) {
-        initialValues.Branch = (bdata[0].BranchID).toString();
-        bdata.forEach(element => {
-            branches.push({
-                name: element.BranchName,
-                id: `${element.BranchID}`
-            });
-        });
+        initialValues.Branch = (bdata[0].id).toString();
     }
 
         return (
@@ -126,7 +107,7 @@ export const AddRider = () => {
                                     {errors.ContactNumber && touched.ContactNumber ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='ContactNumber' /></Text> : <></>}
 
                                     <Text style={globalStyles.inputLabel}>Branch *</Text>
-                                    <Dropdown value={values.Branch} setValue={handleChange('Branch')} data={!bloading ? branches : []} />
+                                    <Dropdown value={values.Branch} setValue={handleChange('Branch')} data={!bloading ? bdata : []} />
                                     {errors.Branch && touched.Branch ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='Branch' /></Text> : <></>}
 
                                     <CheckBoxContainer value={values.Active} name="Active" setValue={setFieldValue} text="Active" />
