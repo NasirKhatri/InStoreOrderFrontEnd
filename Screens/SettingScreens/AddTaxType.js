@@ -1,9 +1,11 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Keyboard, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { FlatButton } from '../../Components/Button'
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
+import { useMutation } from '@tanstack/react-query';
 
 import globalStyles from '../../globalStyles'
 
@@ -21,17 +23,19 @@ const TaxTypeSchema = Yup.object().shape({
     TaxRate: Yup.number().min(0, 'Rate Must be Greater than or equal to Zero').required('Required'),
 })
 
-const addTaxTypeRequest = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
-
-}
-
 export const AddTaxType = () => {
+    
+    const mutation = useMutation((values) => addRequest(values, "taxtypes/addtaxtype"));
+
+    const handleSubmit = (values, actions) => {
+        mutation.mutateAsync(values);
+        actions.resetForm();
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
-                <Formik initialValues={initialValues} validationSchema={TaxTypeSchema} onSubmit={(values, actions) => addTaxTypeRequest(values, actions)}>
+                <Formik initialValues={initialValues} validationSchema={TaxTypeSchema} onSubmit={(values, actions) => handleSubmit(values, actions)}>
                     {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors, touched }) => (
                         <>
                             <KeyboardAwareScrollView>
@@ -57,6 +61,10 @@ export const AddTaxType = () => {
                         </>
                     )}
                 </Formik>
+                {
+                        mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
+                            mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
+                    }
             </View>
         </TouchableWithoutFeedback>
     )
