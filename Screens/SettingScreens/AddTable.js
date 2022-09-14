@@ -5,9 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { getBranches } from '../../SharedFunctions.js/GetBranches';
-import { getData } from '../../SharedFunctions.js/SetGetData';
-import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
-import axios from 'axios';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import globalStyles from '../../globalStyles'
 
@@ -27,39 +25,9 @@ const TableSchema = Yup.object().shape({
     Branch: Yup.string().required('Required')
 })
 
-const addTableRequest = async (values) => {
-    try {
-        const user = await getData('user');
-        if (user != null) {
-            const token = user.Token;
-            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
-            const result = await axios.post(`${BaseUrl}/tables/addtable`, requestBody, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            return {
-                msg: result.data.msg,
-                status: result.status
-            };
-        }
-        else {
-            return;
-        }
-    }
-
-    catch (err) {
-        return {
-            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
-            status: err.response.status ? err.response.status : 500
-        };
-    }
-
-}
-
 export const AddTable = () => {
     const { isLoading: bloading, data: bdata } = useQuery(['branches'], () => getBranches('dropdown'));
-    const mutation = useMutation((values) => addTableRequest(values));
+    const mutation = useMutation((values) => addRequest(values, "tables/addtable"));
 
     const handleSubmit = (values, actions) => {
         mutation.mutateAsync(values);

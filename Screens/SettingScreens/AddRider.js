@@ -11,11 +11,9 @@ import { getBranches } from '../../SharedFunctions.js/GetBranches';
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 
-import globalStyles from '../../globalStyles'
-import axios from 'axios';
-import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
+import globalStyles from '../../globalStyles';
 import { useQuery } from '@tanstack/react-query';
-import { getData } from '../../SharedFunctions.js/SetGetData';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 const initialValues = {
     Name: '',
@@ -32,39 +30,9 @@ const UserSchema = Yup.object().shape({
     ContactNumber: Yup.string().matches(/[0-9]{4}-[0-9]{7}/, 'Invalid Phone No').required('Required'),
 })
 
-const addRiderRequest = async (values) => {
-    try {
-        const user = await getData('user');
-        if (user != null) {
-            const token = user.Token;
-            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
-            const result = await axios.post(`${BaseUrl}/riders/addrider`, requestBody, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            return {
-                msg: result.data.msg,
-                status: result.status
-            };
-        }
-        else {
-            return;
-        }
-    }
-
-    catch (err) {
-        return {
-            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
-            status: err.response.status ? err.response.status : 500
-        };
-    }
-
-}
-
 export const AddRider = () => {
     const { isLoading: bloading, data: bdata } = useQuery(['branches'], () => getBranches('dropdown'));
-    const mutation = useMutation((values) => addRiderRequest(values));
+    const mutation = useMutation((values) => addRequest(values, "riders/addrider"));
 
     const handleSubmit = (values, actions) => {
         mutation.mutateAsync(values);

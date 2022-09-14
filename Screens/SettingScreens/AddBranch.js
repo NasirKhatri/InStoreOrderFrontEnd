@@ -1,17 +1,15 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text, Alert } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Keyboard, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { FlatButton } from '../../Components/Button'
-import { getData } from '../../SharedFunctions.js/SetGetData.js';
 import { useMutation } from '@tanstack/react-query';
 
-import globalStyles from '../../globalStyles'
-import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
+import globalStyles from '../../globalStyles';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
-import axios from 'axios';
 
 const initialValues = {
     BranchName: '',
@@ -27,38 +25,8 @@ const BranchSchema = Yup.object().shape({
 
 })
 
-const addBranchRequest = async (values) => {
-    try {
-        const user = await getData('user');
-        if (user != null) {
-            const token = user.Token;
-            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
-            const result = await axios.post(`${BaseUrl}/branches/addbranch`, requestBody, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            return {
-                msg: result.data.msg,
-                status: result.status
-            };
-        }
-        else {
-            return;
-        }
-    }
-
-    catch (err) {
-        return {
-            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
-            status: err.response.status ? err.response.status : 500
-        };
-    }
-
-}
-
 export const AddBranch = () => {
-    const mutation = useMutation((values) => addBranchRequest(values));
+    const mutation = useMutation((values) => addRequest(values, "branches/addbranch"));
 
     const handleSubmit = (values, actions) => {
         mutation.mutateAsync(values);

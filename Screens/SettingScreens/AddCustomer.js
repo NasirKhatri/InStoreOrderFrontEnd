@@ -6,14 +6,12 @@ import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useMutation } from '@tanstack/react-query';
-import { getData } from '../../SharedFunctions.js/SetGetData.js';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
-import axios from 'axios';
 
 import globalStyles from '../../globalStyles'
-import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 const initialValues = {
     Name: '',
@@ -36,37 +34,8 @@ const CustomerSchema = Yup.object().shape({
     CNIC: Yup.string().matches(/[0-9]{5}-[0-9]{7}-[0-9]{1}/, 'Invalid CNIC No'),
 })
 
-const addCustomerRequest = async (values) => {
-    try {
-        const user = await getData('user');
-        if (user != null) {
-            const token = user.Token;
-            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
-            const result = await axios.post(`${BaseUrl}/customers/addcustomer`, requestBody, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            return {
-                msg: result.data.msg,
-                status: result.status
-            };
-        }
-        else {
-            return;
-        }
-    }
-
-    catch (err) {
-        return {
-            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
-            status: err.response.status ? err.response.status : 500
-        };
-    }
-}
-
 export const AddCustomer = () => {
-    const mutation = useMutation((values) => addCustomerRequest(values));
+    const mutation = useMutation((values) => addRequest(values, "customers/addcustomer"));
 
     const handleSubmit = (values, actions) => {
         mutation.mutateAsync(values);

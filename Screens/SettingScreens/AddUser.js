@@ -1,20 +1,18 @@
 import React from 'react'
-import { View, TouchableWithoutFeedback, TextInput, ScrollView, Keyboard, Text, Alert } from 'react-native'
+import { View, TouchableWithoutFeedback, TextInput, Keyboard, Text, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
-import { setData, getData } from '../../SharedFunctions.js/SetGetData.js';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import { useMutation } from '@tanstack/react-query';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";
-import axios from 'axios';
 
 import globalStyles from '../../globalStyles'
-import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 
 const initialValues = {
     Name: '',
@@ -41,38 +39,8 @@ const UserSchema = Yup.object().shape({
     CNIC: Yup.string().matches(/[0-9]{5}-[0-9]{7}-[0-9]{1}/, 'Invalid CNIC No'),
 })
 
-const addUserRequest = async (values) => {
-
-    try {
-        const user = await getData('user');
-        if (user != null) {
-            const token = user.Token;
-            const requestBody = { ...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID };
-            const result = await axios.post(`${BaseUrl}/users/adduser`, requestBody, {
-                headers: {
-                    authorization: `Bearer ${token}`
-                }
-            })
-            return {
-                msg: result.data.msg,
-                status: result.status
-            };
-        }
-        else {
-            return;
-        }
-    }
-
-    catch (err) {
-        return {
-            msg: err.response.data.msg ? err.response.data.msg : "Something went wrong, Try Again",
-            status: err.response.status ? err.response.status : 500
-        };
-    }
-}
-
 export const AddUser = () => {
-    const mutation = useMutation((values) => addUserRequest(values));
+    const mutation = useMutation((values) => addRequest(values, "users/adduser"));
     const roles = [{ name: "Admin", id: '1' }, { name: "All", id: '2' }, { name: "Cook", id: '3' }, { name: "Cashier", id: '4' },
     { name: "Waiter", id: '5' }, { name: "Cook & Cashier", id: '6' }, { name: "Cook & Cashier", id: '7' }, { name: "Waiter & Cashier", id: '8' }]
 
@@ -147,7 +115,7 @@ export const AddUser = () => {
 
                                 <Text style={globalStyles.inputLabel}>CNIC Number</Text>
                                 <TextInput
-                                    style={globalStyles.input} placeholder="User CNIC"
+                                    keyboardType='numeric' style={globalStyles.input} placeholder="User CNIC"
                                     onChangeText={handleChange('CNIC')}
                                     onBlur={handleBlur('CNIC')}
                                     value={values.CNIC} />
