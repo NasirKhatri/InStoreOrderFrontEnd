@@ -9,8 +9,6 @@ export const UploadImage = async (setImage) => {
         let fileSize = fileInfo.size / 1024 / 1024;
         return fileSize;
       };
-    // https://docs.expo.dev/versions/v45.0.0/sdk/imagepicker/
-    // https://stackoverflow.com/questions/42521679/how-can-i-upload-a-photo-with-expo
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -20,6 +18,13 @@ export const UploadImage = async (setImage) => {
 
     if (!result.cancelled) {
         const fileSize = await getFileSize(result.uri);
-        fileSize > 5 ? alert('File Is Too Big (Max 5 mb File Allowed)') : setImage('Image', {...result, fileSize: fileSize});
+        const fileName = result.uri.split('/').pop();
+        const fileExtension = result.uri.split('.').pop();
+        const Image = {
+            filename: fileName,
+            uri: result.uri,
+            type: `image/${fileExtension}`
+        }
+        fileSize > 5 ? alert('File Is Too Big (Max 5 mb File Allowed)') : setImage('Image', Image);
     }
 }
