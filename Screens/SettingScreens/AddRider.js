@@ -6,7 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
 import { CheckBoxContainer } from '../../Components/CheckBoxContainer';
-import { getBranches } from '../../SharedFunctions.js/GetBranches';
+import { getBranches } from '../../SharedFunctions.js/GetQueries';
 
 import { Formik, ErrorMessage } from 'formik';
 import * as Yup from "yup";

@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { FlatButton } from '../../Components/Button'
 import { Dropdown } from '../../Components/Dropdown';
-import { getBranches } from '../../SharedFunctions.js/GetBranches';
+import { getBranches } from '../../SharedFunctions.js/GetQueries';
 import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import globalStyles from '../../globalStyles'
