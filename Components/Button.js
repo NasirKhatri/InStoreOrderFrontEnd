@@ -43,10 +43,10 @@ export function IconButton({name, onPress, color}) {
 )
 }
 
-export const POSButton1 = ({ text, onPress }) => {
+export const POSButton1 = ({ text, onPress, active }) => {
   return (
       <TouchableOpacity style={{ flex: 1 }} onPress={onPress}>
-          <View style={styles.CustomerTypeButton}>
+          <View style={active ? styles.CustomerTypeButtonActive : styles.CustomerTypeButton}>
               <Text style={styles.ButtonText}>{text}</Text>
           </View>
       </TouchableOpacity>
@@ -106,6 +106,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     padding: 6,
     marginBottom: 6
+},
+CustomerTypeButtonActive: {
+  backgroundColor: 'lightgreen',
+  marginHorizontal: 4,
+  padding: 6,
+  marginBottom: 6
 },
   ButtonText: {
     fontWeight: 'bold',

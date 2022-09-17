@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useState, useReducer } from 'react';
 
 import LoginSubscribeStack from './Routes/LoginSubscribeStack';
 import DashboardStack from './Routes/DashboardStack';
@@ -13,17 +14,24 @@ import POSStack from './Routes/POSStack';
 import KitchenStack from './Routes/KitchenStack';
 import SettingsStack from './Routes/SettingStack';
 import { StoreContext } from './SharedFunctions.js/StoreContext';
+import { invoiceUpdateReducer } from './SharedFunctions.js/Reducers';
 
 const Drawer = createDrawerNavigator();
 
 const queryClient = new QueryClient();
-
+ 
+const all_invoice_details = {
+  invoice1_details: [],
+  invoice2_details: [],
+  invoice3_details: [],
+}
 
 export default function App() {
-  const [isLoggedIn, setLoggedIn] = React.useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreContext.Provider value={{ isLoggedin: isLoggedIn, setLoggedIn: setLoggedIn }}>
+      <StoreContext.Provider value={{ isLoggedin: isLoggedIn, setLoggedIn: setLoggedIn, invoices: invoices, dispatchInvoice: dispatch }}>
         <NavigationContainer>
           {
             !isLoggedIn ? <LoginSubscribeStack /> :

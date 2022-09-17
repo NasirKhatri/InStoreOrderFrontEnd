@@ -9,12 +9,13 @@ import { POSButton1 } from '../../Components/Button';
 
 import globalStyles from '../../globalStyles';
 
-const CustomerNoSection = () => {
+const CustomerNoSection = ({ customerNo, setCustomerNo }) => {
+    const [customerNoLocal, setCustomerNoLocal] = React.useState(customerNo);
     return (
         <View style={{ flexDirection: 'row' }}>
-            <POSButton1 text='Customer 1' onPress={() => null} />
-            <POSButton1 text='Customer 2' onPress={() => null} />
-            <POSButton1 text='Customer 3' onPress={() => null} />
+            <POSButton1 text='Customer 1' active={customerNoLocal === 1 ? true : false} onPress={() => (setCustomerNo(1), setCustomerNoLocal(1))} />
+            <POSButton1 text='Customer 2' active={customerNoLocal === 2 ? true : false} onPress={() => (setCustomerNo(2), setCustomerNoLocal(2))} />
+            <POSButton1 text='Customer 3' active={customerNoLocal === 3 ? true : false} onPress={() => (setCustomerNo(3), setCustomerNoLocal(3))} />
         </View>
     )
 }
@@ -65,7 +66,7 @@ const InvoiceDetailsSection = () => {
     )
 }
 
-const BottomButtonsSection = ({navigation}) => {
+const BottomButtonsSection = ({ navigation }) => {
     return (
         <View style={{ flexDirection: 'row' }}>
             <POSButton1 text='Back' onPress={() => navigation.goBack()} />
@@ -75,7 +76,9 @@ const BottomButtonsSection = ({navigation}) => {
     )
 }
 
-const POSDetailScreen = ({navigation}) => {
+const POSDetailScreen = ({ route, navigation }) => {
+    const { customerNo, setCustomerNo } = route.params;
+
     const orderLines = [
         { key: 1, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
         { key: 2, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
@@ -96,7 +99,7 @@ const POSDetailScreen = ({navigation}) => {
 
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
-            <CustomerNoSection />
+            <CustomerNoSection customerNo={customerNo} setCustomerNo={setCustomerNo} />
             <OrderLinesHeaderSection />
             <FlatList
                 data={orderLines}
