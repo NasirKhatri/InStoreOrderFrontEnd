@@ -15,7 +15,7 @@ import { BaseUrl } from '../../SharedFunctions.js/StoreContext';
 import * as FileSystem from 'expo-file-system';
 import { useMutation } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import { getCategories, getTaxTypes } from '../../SharedFunctions.js/GetQueries';
+import { getCategories, getTaxTypes, getTaxTypesDetails } from '../../SharedFunctions.js/GetQueries';
 
 import globalStyles from '../../globalStyles';
 
@@ -81,20 +81,12 @@ const addItemRequest = async (values, netPrice, url) => {
 
 }
 
-const calculateNetPrice = (taxtype, salesrate, discount, roundto ) => {
-    if(taxtype.TaxBfrDisc) {
-        return (Math.round(salesrate * (1 + taxtype.TaxRate / 100) - salesrate * (discount / 100)), roundto);
-    }
-    else {
-        return Math.round((salesrate - salesrate * (discount / 100)) * (1 + taxtype.TaxRate / 100), roundto);
-    }
-
-}
 
 export const AddItem = () => {
     const [netPrice, setNetPrice] = React.useState(0);
     const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories('dropdown'));
-    const { isLoading: tloading, data: tdata } = useQuery(['taxTypes'], () => getTaxTypes('dropdown'));
+    const { isLoading: tloading, data: tdata } = useQuery(['taxTypes', 'dropdown'], () => getTaxTypes('dropdown'));
+    const { isLoading: tdloading, data: tddata } = useQuery(['taxDetails', 'details'], () => getTaxTypesDetails());
     const mutation = useMutation((values) => addItemRequest(values, netPrice, "items/additem"));
 
     if (!cloading && !tloading) {
@@ -151,7 +143,15 @@ export const AddItem = () => {
                                 {errors.TaxType && touched.TaxType ? <Text style={globalStyles.ErrorMessages}><ErrorMessage name='TaxType' /></Text> : <></>}
 
                                 <Text style={globalStyles.inputLabel}>Net Price</Text>
-                                {setNetPrice(Math.round(values.SalesRate * 1.17 - values.SalesRate * (values.Discount / 100)), 2)}
+                                {(() => {
+                                    if(!tdloading) {
+                                        const taxDetails = tddata.find((element) => element.TaxTypeID == values.TaxType);
+                                        if(taxDetails) {
+                                        taxDetails.TaxBfrDisc ? setNetPrice((values.SalesRate * (1 + taxDetails.TaxRate / 100) - values.SalesRate * (values.Discount / 100)).toFixed(2)) :
+                                        setNetPrice((values.SalesRate - values.SalesRate * (values.Discount / 100)) * (1 + taxDetails.TaxRate / 100).toFixed(2))
+                                        }
+                                    }
+                                })()}
                                 <Text style={{ ...globalStyles.input, paddingVertical: 10 }}>{netPrice} (Inc. Taxes and Discount)</Text>
 
                                 <View style={{ flexDirection: 'row', marginTop: 15 }}>
@@ -168,9 +168,9 @@ export const AddItem = () => {
                     )}
                 </Formik>
                 {
-                    mutation.isError ? Alert.alert('Instore Order', mutation.data.msg) :
-                        mutation.isSuccess ? Alert.alert('Instore Order', mutation.data.msg) : null
-                    }
+                    mutation.isError ? (Alert.alert('Instore Order', mutation.data.msg), mutation.reset()) :
+                        mutation.isSuccess ? (Alert.alert('Instore Order', mutation.data.msg), mutation.reset()) : null
+                }
             </View>
         </TouchableWithoutFeedback>
     )

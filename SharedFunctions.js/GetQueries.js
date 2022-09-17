@@ -68,6 +68,7 @@ export const getTaxTypes = async (type) => {
         }
     });
 
+
     let taxtypes = [];
     data.data.forEach(element => {
         taxtypes.push({
@@ -83,4 +84,18 @@ export const getTaxTypes = async (type) => {
         return data.data;
     } 
 }
+
+// Get TaxTypeDetail
+export const getTaxTypesDetails = async () => {
+    const user = await getData('user');
+    const token = user.Token;
+    const url = `${BaseUrl}/taxtypes/${user.ClientID}`;
+    const data = await axios.get(url, {
+        headers: {
+            authorization: `Bearer ${token}`,
+        }
+    });
+    return data.data;
+}
+
 
