@@ -52,7 +52,6 @@ const addItemRequest = async (values, netPrice, url) => {
                 userID: user.UserID,
                 roleID: user.RoleID
             }
-            console.log(requestBody);
             let result = await FileSystem.uploadAsync(`${BaseUrl}/${url}`, values.Image.uri, {
                 fieldName: 'Image',
                 httpMethod: "POST",
@@ -148,7 +147,7 @@ export const AddItem = () => {
                                         const taxDetails = tddata.find((element) => element.TaxTypeID == values.TaxType);
                                         if(taxDetails) {
                                         taxDetails.TaxBfrDisc ? setNetPrice((values.SalesRate * (1 + taxDetails.TaxRate / 100) - values.SalesRate * (values.Discount / 100)).toFixed(2)) :
-                                        setNetPrice((values.SalesRate - values.SalesRate * (values.Discount / 100)) * (1 + taxDetails.TaxRate / 100).toFixed(2))
+                                        setNetPrice(((values.SalesRate - values.SalesRate * (values.Discount / 100)) * (1 + taxDetails.TaxRate / 100)).toFixed(2))
                                         }
                                     }
                                 })()}
