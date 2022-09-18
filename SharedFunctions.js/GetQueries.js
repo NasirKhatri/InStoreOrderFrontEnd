@@ -34,7 +34,6 @@ export const getBranches = async (type) => {
 export const getCategories = async (type) => {
     const user = await getData('user');
     const token = user.Token;
-    console.log(type);
     let url;
     if(type === "POS") {
         url = `${BaseUrl}/categories/${user.ClientID}/POS`;

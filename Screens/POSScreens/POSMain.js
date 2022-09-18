@@ -19,6 +19,30 @@ const POSMainScreen = ({ navigation }) => {
     const items = useQuery(['Items', 'Details'], () => getItems());
     const storeData = useContext(StoreContext);
 
+    let itemDetails = [];
+    if (customerNo === 1) {
+        itemDetails = storeData.invoices.invoice1_details;
+    }
+    else if (customerNo === 2) {
+        itemDetails = storeData.invoices.invoice2_details;
+    }
+    else {
+        itemDetails = storeData.invoices.invoice3_details;;
+    }
+
+    let no_of_products = itemDetails.length;
+    let no_of_items_sold = 0;
+    let gross_price = 0;
+
+    if(itemDetails.length > 0) {
+        itemDetails.forEach((item) => {
+            no_of_items_sold += item.Qty;
+            gross_price += item.Qty * item.NetPrice;
+        })
+    }
+
+    gross_price = gross_price.toFixed(0);
+
 
     if(categories.isLoading || items.isLoading) {
         return (
@@ -71,13 +95,15 @@ const POSMainScreen = ({ navigation }) => {
                 />
             </View>
             <View style={{ flexDirection: 'row' }}>
-                <POSButton1 text='6 Items' onPress={() => null} />
-                <POSButton1 text='Rs 4000' onPress={() => null} />
+                <POSButton1 text={`I ${no_of_products}`} onPress={() => null} />
+                <POSButton1 text={`Q ${no_of_items_sold}`} onPress={() => null} />
+                <POSButton1 text={`${gross_price}`} onPress={() => null} />
                 <POSButton1 text='Details' onPress={() => navigation.navigate('POSDetail', {customerNo: customerNo, setCustomerNo: setCustomerNo})} />
             </View>
             <View style={{ flexDirection: 'row' }}>
-                <POSButton1 text='Discard Sale' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
-                <POSButton1 text='Recall' onPress={() => null} />
+                <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
+                <POSButton1 text='Dine In' onPress={() => null} />
+                <POSButton1 text='Take Away' onPress={() => null} />
                 <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
             </View>
         </View>
