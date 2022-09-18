@@ -56,14 +56,30 @@ export const POSButton1 = ({ text, onPress, active }) => {
 export const POSButton2 = ({ item }) => {
   return (
       <TouchableOpacity style={{ flex: 1/3 }}>
-          <View style={{ ...styles.CustomerTypeButton, backgroundColor: 'white', borderColor: 'lightgray', borderWidth: 1, borderTopColor: item.color, borderTopWidth: 10 }}>
-              <Text style={{...styles.ButtonText, color: 'black', marginVertical: 12}}>{item.name}</Text>
+          <View style={{ ...styles.posItemTab, borderTopColor: item.CategoryColor, borderTopWidth: 12 }}>
+              <Text style={styles.posItemTabText}>{item.CategoryName ? item.CategoryName : item.ItemName}</Text>
           </View>
       </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
+  posItemTab: {
+    backgroundColor: 'white',
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    height: 60,
+    overflow: 'hidden',
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  posItemTabText: {
+    color: 'black',
+    fontSize: 12,
+    fontWeight: '300',
+  },
+
   button: {
     borderRadius: 8,
     paddingVertical: 10,

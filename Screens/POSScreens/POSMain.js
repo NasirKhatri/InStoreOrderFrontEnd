@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View, Text, TextInput, FlatList } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
+import { getCategories, getItems } from '../../SharedFunctions.js/GetQueries';
 
 import globalStyles from '../../globalStyles';
 
@@ -11,32 +13,17 @@ import { POSButton1, POSButton2 } from '../../Components/Button';
 const POSMainScreen = ({ navigation }) => {
     const [customerNo, setCustomerNo] = React.useState(1);
     const [custoemrType, setCustomerType] = React.useState('Take Away');
-    const categories = [
-        { key: '1', name: 'Burger', color: 'blue' },
-        { key: '2', name: 'Burger', color: 'darkgray' },
-        { key: '3', name: 'Burger', color: 'green' },
-        { key: '4', name: 'Burger', color: 'red' },
-        { key: '5', name: 'Burger', color: 'orange' },
-        { key: '6', name: 'Burger', color: 'purple' },
-        { key: '7', name: 'Burger', color: 'lightgreen' },
-        { key: '8', name: 'Burger', color: 'gray' },
-        { key: '9', name: 'Burger', color: 'black' },
-        { key: '10', name: 'Burger', color: 'pink' },
-    ];
+    const categories = useQuery(['Categories', 'Details'], () => getCategories());
+    const items = useQuery(['Items', 'Details'], () => getItems());
 
-    const items = [
-        { key: '1', name: 'Burger', color: 'blue' },
-        { key: '2', name: 'Burger', color: 'darkgray' },
-        { key: '3', name: 'Burger', color: 'green' },
-        { key: '4', name: 'Burger', color: 'red' },
-        { key: '5', name: 'Burger', color: 'orange' },
-        { key: '6', name: 'Burger', color: 'purple' },
-        { key: '7', name: 'Burger', color: 'lightgreen' },
-        { key: '8', name: 'Burger', color: 'gray' },
-        { key: '9', name: 'Burger', color: 'black' },
-        { key: '10', name: 'Burger', color: 'pink' },
-    ];
+    if(categories.isLoading || items.isLoading) {
+        return (
+            <>
+            </>
+        )
+    }
 
+    else {
 
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
@@ -54,20 +41,22 @@ const POSMainScreen = ({ navigation }) => {
             <View style={{ flex: 1, ...styles.Section }}>
                 <Text style={styles.title}>Categories</Text>
                 <FlatList
-                    columnWrapperStyle={{ justifyContent: 'space-between', alignItems: 'baseline' }}
-                    data={categories}
+                    columnWrapperStyle={{ justifyContent: 'flex-start'}}
+                    data={categories.data}
                     numColumns={3}
                     renderItem={({ item }) => <POSButton2 item={item} />}
+                    keyExtractor={item => item.CategoryID}
                     style={{ flexGrow: 0, paddingVertical: 8 }}
                 />
             </View>
             <View style={{ flex: 1, ...styles.Section }}>
                 <Text style={styles.title}>Items</Text>
                 <FlatList
-                    columnWrapperStyle={{ justifyContent: 'space-between', alignItems: 'baseline' }}
-                    data={items}
+                    
+                    data={items.data}
                     numColumns={3}
                     renderItem={({ item }) => <POSButton2 item={item} />}
+                    keyExtractor={item => item.ItemID}
                     style={{ flexGrow: 0, paddingVertical: 8 }}
                 />
             </View>
@@ -83,6 +72,7 @@ const POSMainScreen = ({ navigation }) => {
             </View>
         </View>
     )
+    }
 }
 
 const styles = StyleSheet.create({

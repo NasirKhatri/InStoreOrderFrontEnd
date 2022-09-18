@@ -22,12 +22,12 @@ export const getBranches = async (type) => {
         });
     });
 
-    if(type = 'dropdown') {
+    if (type = 'dropdown') {
         return branches;
     }
     else {
         return data.data;
-    } 
+    }
 }
 
 // Get item categories of the supplier
@@ -41,20 +41,46 @@ export const getCategories = async (type) => {
         }
     });
 
-    let categories = [];
-    data.data.forEach(element => {
-        categories.push({
-            name: element.CategoryName,
-            id: `${element.CategoryID}`
+    if (type === 'dropdown') {
+        let categories = [];
+        data.data.forEach(element => {
+            categories.push({
+                name: element.CategoryName,
+                id: `${element.CategoryID}`
+            });
         });
-    });
-
-    if(type = 'dropdown') {
         return categories;
     }
     else {
         return data.data;
-    } 
+    }
+}
+
+
+// Get item items of the supplier
+export const getItems = async (type) => {
+    const user = await getData('user');
+    const token = user.Token;
+    const url = `${BaseUrl}/items/${user.ClientID}`;
+    const data = await axios.get(url, {
+        headers: {
+            authorization: `Bearer ${token}`,
+        }
+    });
+
+    if (type === 'dropdown') {
+        let items = [];
+        data.data.forEach(element => {
+            items.push({
+                name: element.ItemName,
+                id: `${element.ItemID}`
+            });
+        });
+        return items;
+    }
+    else {
+        return data.data;
+    }
 }
 
 //Get TaxTypes of the supplier
@@ -68,7 +94,6 @@ export const getTaxTypes = async (type) => {
         }
     });
 
-
     let taxtypes = [];
     data.data.forEach(element => {
         taxtypes.push({
@@ -76,13 +101,7 @@ export const getTaxTypes = async (type) => {
             id: `${element.TaxTypeID}`
         });
     });
-
-    if(type = 'dropdown') {
-        return taxtypes;
-    }
-    else {
-        return data.data;
-    } 
+    return taxtypes;
 }
 
 // Get TaxTypeDetail

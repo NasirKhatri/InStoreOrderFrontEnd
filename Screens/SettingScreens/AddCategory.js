@@ -23,7 +23,7 @@ import { Dropdown } from '../../Components/Dropdown';
 const initialValues = {
     Name: '',
     Branches: '',
-    Color: 'Red',
+    Color: 'red',
     Image: null,
     VisibilityInPOS: true,
     ImageInPOS: false,
@@ -98,7 +98,7 @@ export const AddCategory = () => {
                                     value={values.Branches} />
 
                                 <Text style={globalStyles.inputLabel}>Category Color</Text>
-                                <Dropdown value={values.Color} setValue={handleChange('Color')} data={['Red', 'Green', 'Orange', 'Pink', 'Black']} />
+                                <Dropdown value={values.Color} setValue={handleChange('Color')} data={['red', 'green', 'orange', 'pink', 'black']} />
                                 <View style={{ flexDirection: 'row', marginTop: 15 }}>
                                     {!values.Image ? <POSButton1 onPress={() => UploadImage(setFieldValue)} text='Select Image' /> : <></>}
                                     {values.Image ? <POSButton1 onPress={() => UploadImage(setFieldValue)} text='Change Image' /> : <></>}
