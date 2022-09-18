@@ -38,7 +38,7 @@ const addCategoryRequest = async (values, url) => {
         const user = await getData('user');
         if (user != null) {
             const token = user.Token;
-            const requestBody = {Branches: values.Branches, Color: values.Color, ImageInPOS: values.ImageInPOS, Name: values.Name, VisibilityInPOS: values.ImageInPOS, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID}
+            const requestBody = {...values, clientID: user.ClientID, userID: user.UserID, roleID: user.RoleID}
             let result = await FileSystem.uploadAsync(`${BaseUrl}/${url}`,values.Image.uri,  {
                 fieldName: 'Image',
                 httpMethod: "POST",
