@@ -53,9 +53,9 @@ export const POSButton1 = ({ text, onPress, active }) => {
   )
 }
 
-export const POSButton2 = ({ item }) => {
+export const POSButton2 = ({ item, onPress }) => {
   return (
-      <TouchableOpacity style={{ flex: 1/3 }}>
+      <TouchableOpacity style={{ flex: 1/3 }} onPress={onPress}>
           <View style={{ ...styles.posItemTab, borderTopColor: item.CategoryColor, borderTopWidth: 12 }}>
               <Text style={styles.posItemTabText}>{item.CategoryName ? item.CategoryName : item.ItemName}</Text>
           </View>

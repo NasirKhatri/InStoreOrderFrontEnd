@@ -24,7 +24,7 @@ export const invoiceUpdateReducer = (state, action) => {
                 break;
         }
     
-        ItemIndex = tempArray.findIndex((item) => item.ItemNumber === action.ItemNumber);
+        ItemIndex = tempArray.findIndex((item) => item.ItemID === action.ItemNumber);
     }
 
 
