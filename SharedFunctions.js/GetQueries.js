@@ -34,7 +34,16 @@ export const getBranches = async (type) => {
 export const getCategories = async (type) => {
     const user = await getData('user');
     const token = user.Token;
-    const url = `${BaseUrl}/categories/${user.ClientID}`;
+    console.log(type);
+    let url;
+    if(type === "POS") {
+        url = `${BaseUrl}/categories/${user.ClientID}/POS`;
+
+    }
+    else {
+        url = `${BaseUrl}/categories/${user.ClientID}`;
+    }
+    console.log(url);
     const data = await axios.get(url, {
         headers: {
             authorization: `Bearer ${token}`,
