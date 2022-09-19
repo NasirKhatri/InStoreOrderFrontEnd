@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import POSOrderline from '../../Components/POSOrderline';
 import { POSButton1 } from '../../Components/Button';
 import { StoreContext } from '../../SharedFunctions.js/StoreContext';
+import { GetItemDetails } from '../../SharedFunctions.js/GetInvoiceDetails';
 
 import globalStyles from '../../globalStyles';
 
@@ -38,20 +39,63 @@ const OrderLinesHeaderSection = () => {
 }
 
 const InvoiceDetailsSection = () => {
+    const storeData = useContext(StoreContext);
+    const customerNo = storeData.customerNo;
+
+    let itemDetails = [];
+    if (customerNo === 1) {
+        itemDetails = storeData.invoices.invoice1_details;
+    }
+    else if (customerNo === 2) {
+        itemDetails = storeData.invoices.invoice2_details;
+    }
+    else {
+        itemDetails = storeData.invoices.invoice3_details;;
+    }
+
+    let Products = 0;
+    let ItemsQty = 0;
+    let ItemDisc = 0;
+    let SubTotal = 0;
+    let TaxAmount = 0;
+
+    const getDetails = (itemDetails) => {
+        Products = itemDetails.length;
+    
+    
+        if(itemDetails.length > 0) {
+            itemDetails.forEach((item) => {
+                ItemsQty += item.Qty;
+                SubTotal += item.Qty * item.SalesPrice;
+                if(!item.TaxBfrDisc) {
+                    ItemDisc += item.SalesPrice * (item.Discount / 100);
+                    TaxAmount += (item.SalesPrice - item.SalesPrice * (item.Discount / 100)) * (taxDetails.TaxRate / 100);
+                }
+                else {
+                    ItemDisc += item.SalesPrice * (item.Discount / 100);
+                    TaxAmount += item.SalesPrice * (item.TaxRate / 100);
+                }
+            })
+        }
+    
+    };
+
+    getDetails(itemDetails);
+
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 6, backgroundColor: 'lightblue', marginBottom: 6, marginTop: 6 }}>
             <View style={{alignItems: "flex-start"}}>
-                <Text style={styles.title}>Products: 5</Text>
-                <Text style={styles.title}>Items Qty: 8</Text>
-                <Text style={styles.title}>Item Disc: </Text>
+                <Text style={styles.title}>Products: {Products}</Text>
+                <Text style={styles.title}>Items Qty: {ItemsQty}</Text>
+                <Text style={styles.title}>Item Disc: {ItemDisc}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text style={styles.title}>Add Disc:</Text>
                     <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} />
                 </View>
             </View>
             <View style={{alignItems: "flex-start"}}>
-                <Text style={styles.title}>Sub Total: 5000</Text>
-                <Text style={styles.title}>Tax Amt: 850</Text>
+                <Text style={styles.title}>Sub Total: {SubTotal}</Text>
+                <Text style={styles.title}>Tax Amt: {TaxAmount}</Text>
                 <Text style={styles.title}>Total Disc: </Text>
                 <Text style={styles.title}>Total: 5850</Text>
             </View>

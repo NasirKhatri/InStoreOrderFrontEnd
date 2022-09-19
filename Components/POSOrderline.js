@@ -8,7 +8,7 @@ const POSOrderline = ({ item }) => {
             <TextInput defaultValue={JSON.stringify(item.Qty)} style={{ ...styles.row, flexBasis: '14%' }} keyboardType='number-pad'/>
             <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{(item.SalesPrice).toFixed(2)}</Text>
             <TextInput defaultValue={JSON.stringify(item.Discount)} style={{ ...styles.row, flexBasis: '14%' }}keyboardType='number-pad'/>
-            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{(item.NetPrice * item.Qty).toFixed(2)}</Text>
+            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{(item.SalesPrice * item.Qty).toFixed(2)}</Text>
             <Text style={{ ...styles.row, flexBasis: '8%' }}> X </Text>
         </View>
     )
