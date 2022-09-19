@@ -4,11 +4,11 @@ import { View, Text, StyleSheet, TextInput } from 'react-native';
 const POSOrderline = ({ item }) => {
     return (
         <View style={{ flexDirection: 'row', alignContent: 'flex-start', borderBottomWidth: 0.5, borderColor: 'gray' }}>
-            <Text style={{ ...styles.row, flexBasis: '25%' }}>{item.name}</Text>
-            <TextInput defaultValue={JSON.stringify(item.qty)} style={{ ...styles.row, flexBasis: '14%' }} keyboardType='number-pad'/>
-            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{item.price}</Text>
-            <TextInput defaultValue={JSON.stringify(item.discount)} style={{ ...styles.row, flexBasis: '14%' }}keyboardType='number-pad'/>
-            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{item.total}</Text>
+            <Text style={{ ...styles.row, flexBasis: '25%' }}>{item.ItemName}</Text>
+            <TextInput defaultValue={JSON.stringify(item.Qty)} style={{ ...styles.row, flexBasis: '14%' }} keyboardType='number-pad'/>
+            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{(item.SalesPrice).toFixed(2)}</Text>
+            <TextInput defaultValue={JSON.stringify(item.Discount)} style={{ ...styles.row, flexBasis: '14%' }}keyboardType='number-pad'/>
+            <Text style={{ ...styles.row, flexBasis: '19.5%' }}>{(item.NetPrice * item.Qty).toFixed(2)}</Text>
             <Text style={{ ...styles.row, flexBasis: '8%' }}> X </Text>
         </View>
     )

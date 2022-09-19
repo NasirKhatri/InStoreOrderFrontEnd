@@ -1,21 +1,25 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, FlatList, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
-import { RadioButton } from 'react-native-paper';
+import { useContext } from 'react';
 
 import POSOrderline from '../../Components/POSOrderline';
 import { POSButton1 } from '../../Components/Button';
+import { StoreContext } from '../../SharedFunctions.js/StoreContext';
 
 import globalStyles from '../../globalStyles';
 
-const CustomerNoSection = ({ customerNo, setCustomerNo }) => {
-    const [customerNoLocal, setCustomerNoLocal] = React.useState(customerNo);
+const CustomerNoSection = () => {
+
+    const storeData = useContext(StoreContext);
+    const customerNo = storeData.customerNo;
+    const setCustomerNo = storeData.setCustomerNo;
+
     return (
         <View style={{ flexDirection: 'row' }}>
-            <POSButton1 text='Customer 1' active={customerNoLocal === 1 ? true : false} onPress={() => (setCustomerNo(1), setCustomerNoLocal(1))} />
-            <POSButton1 text='Customer 2' active={customerNoLocal === 2 ? true : false} onPress={() => (setCustomerNo(2), setCustomerNoLocal(2))} />
-            <POSButton1 text='Customer 3' active={customerNoLocal === 3 ? true : false} onPress={() => (setCustomerNo(3), setCustomerNoLocal(3))} />
+            <POSButton1 text='Customer 1' active={customerNo === 1 ? true : false} onPress={() => setCustomerNo(1)} />
+            <POSButton1 text='Customer 2' active={customerNo === 2 ? true : false} onPress={() => setCustomerNo(2)} />
+            <POSButton1 text='Customer 3' active={customerNo === 3 ? true : false} onPress={() => setCustomerNo(3)} />
         </View>
     )
 }
@@ -34,33 +38,22 @@ const OrderLinesHeaderSection = () => {
 }
 
 const InvoiceDetailsSection = () => {
-    const [discountType, setDiscountType] = useState('percent');
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 6, backgroundColor: 'lightblue', marginBottom: 6, marginTop: 6 }}>
-            <View>
-                <Text style={styles.title}>No of Products: 5</Text>
-                <Text style={styles.title}>No of Items Sold: 8</Text>
+            <View style={{alignItems: "flex-start"}}>
+                <Text style={styles.title}>Products: 5</Text>
+                <Text style={styles.title}>Items Qty: 8</Text>
+                <Text style={styles.title}>Item Disc: </Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text style={styles.title}>Discount:</Text>
+                    <Text style={styles.title}>Add Disc:</Text>
                     <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} />
                 </View>
-                <RadioButton.Group onValueChange={newValue => setDiscountType(newValue)} value={discountType}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.title}>%age</Text>
-                            <RadioButton value="percent" />
-                        </View>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text style={styles.title}>Fixed</Text>
-                            <RadioButton value="fixed" />
-                        </View>
-                    </View>
-                </RadioButton.Group>
             </View>
-            <View>
-                <Text style={styles.title}>Sub Total : 5000</Text>
-                <Text style={styles.title}>Tax : 850 (17%)</Text>
-                <Text style={styles.title}>Total : 5850</Text>
+            <View style={{alignItems: "flex-start"}}>
+                <Text style={styles.title}>Sub Total: 5000</Text>
+                <Text style={styles.title}>Tax Amt: 850</Text>
+                <Text style={styles.title}>Total Disc: </Text>
+                <Text style={styles.title}>Total: 5850</Text>
             </View>
         </View>
     )
@@ -77,33 +70,28 @@ const BottomButtonsSection = ({ navigation }) => {
 }
 
 const POSDetailScreen = ({ route, navigation }) => {
-    const { customerNo, setCustomerNo } = route.params;
+    const storeData = useContext(StoreContext);
+    const customerNo = storeData.customerNo;
 
-    const orderLines = [
-        { key: 1, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 2, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 3, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 4, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 5, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 6, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 7, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 8, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 9, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 10, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 11, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 12, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 13, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 14, name: 'Club Sandwitch', qty: 2, price: 250, discount: 0, total: 500 },
-        { key: 15, name: 'Club Sandwitch', qty: 2, price: 300, discount: 0, total: 500 },
-    ]
+    let itemDetails = [];
+    if (customerNo === 1) {
+        itemDetails = storeData.invoices.invoice1_details;
+    }
+    else if (customerNo === 2) {
+        itemDetails = storeData.invoices.invoice2_details;
+    }
+    else {
+        itemDetails = storeData.invoices.invoice3_details;;
+    }
 
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
-            <CustomerNoSection customerNo={customerNo} setCustomerNo={setCustomerNo} />
+            <CustomerNoSection />
             <OrderLinesHeaderSection />
             <FlatList
-                data={orderLines}
+                data={itemDetails}
                 renderItem={({ item }) => <POSOrderline item={item} />}
+                keyExtractor={item => item.ItemID}
                 removeClippedSubviews={false}
             />
             <InvoiceDetailsSection />

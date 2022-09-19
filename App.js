@@ -28,12 +28,13 @@ const all_invoice_details = {
 
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [customerNo, setCustomerNo] = useState(1);
   const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
   console.log(invoices);
-  
+
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreContext.Provider value={{ isLoggedin: isLoggedIn, setLoggedIn: setLoggedIn, invoices: invoices, dispatchInvoice: dispatch }}>
+      <StoreContext.Provider value={{ isLoggedin: isLoggedIn, customerNo: customerNo, setCustomerNo: setCustomerNo, setLoggedIn: setLoggedIn, invoices: invoices, dispatchInvoice: dispatch }}>
         <NavigationContainer>
           {
             !isLoggedIn ? <LoginSubscribeStack /> :
