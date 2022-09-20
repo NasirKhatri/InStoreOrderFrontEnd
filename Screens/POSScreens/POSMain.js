@@ -41,7 +41,7 @@ const POSMainScreen = ({ navigation }) => {
         })
     }
 
-    gross_price = gross_price.toFixed(0);
+    gross_price = gross_price.toFixed(2);
 
 
     if(categories.isLoading || items.isLoading) {
@@ -98,7 +98,7 @@ const POSMainScreen = ({ navigation }) => {
             <View style={{ flexDirection: 'row' }}>
                 <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
                 <POSButton1 text='Dine In' onPress={() => null} />
-                <POSButton1 text='Take Away' onPress={() => null} />
+                <POSButton1 text='Online' onPress={() => null} />
                 <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
             </View>
         </View>

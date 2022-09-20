@@ -41,6 +41,8 @@ const OrderLinesHeaderSection = () => {
 const InvoiceDetailsSection = () => {
     const storeData = useContext(StoreContext);
     const customerNo = storeData.customerNo;
+    const [addDisc, setAddDisc] = React.useState(0);
+    const Parsedvalue = addDisc ? parseFloat(addDisc) : 0;
 
     let itemDetails = [];
     if (customerNo === 1) {
@@ -77,6 +79,10 @@ const InvoiceDetailsSection = () => {
                 }
             })
         }
+
+        // ItemDisc = ItemDisc.toFixed(2);
+        // SubTotal = SubTotal.toFixed(2);
+        // TaxAmount = SubTotal.toFixed(2);
     
     };
 
@@ -87,27 +93,29 @@ const InvoiceDetailsSection = () => {
             <View style={{alignItems: "flex-start"}}>
                 <Text style={styles.title}>Products: {Products}</Text>
                 <Text style={styles.title}>Items Qty: {ItemsQty}</Text>
-                <Text style={styles.title}>Item Disc: {ItemDisc}</Text>
+                <Text style={styles.title}>Item Disc: {ItemDisc.toFixed(2)}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text style={styles.title}>Add Disc:</Text>
-                    <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} />
+                    <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} value={Parsedvalue} onChangeText={setAddDisc} />
                 </View>
             </View>
             <View style={{alignItems: "flex-start"}}>
-                <Text style={styles.title}>Sub Total: {SubTotal}</Text>
-                <Text style={styles.title}>Tax Amt: {TaxAmount}</Text>
-                <Text style={styles.title}>Total Disc: </Text>
-                <Text style={styles.title}>Total: 5850</Text>
+                <Text style={styles.title}>Sub Total: {SubTotal.toFixed(2)}</Text>
+                <Text style={styles.title}>Tax Amt: {TaxAmount.toFixed(2)}</Text>
+                <Text style={styles.title}>Total Disc: {(ItemDisc + Parsedvalue).toFixed(2)} </Text>
+                <Text style={styles.title}>Total: {(SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2)}</Text>
             </View>
         </View>
     )
 }
 
 const BottomButtonsSection = ({ navigation }) => {
+    const storeData = useContext(StoreContext);
+    const customerNo = storeData.customerNo;
     return (
         <View style={{ flexDirection: 'row' }}>
             <POSButton1 text='Back' onPress={() => navigation.goBack()} />
-            <POSButton1 text='Discard Sale' onPress={() => null} />
+            <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
             <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
         </View>
     )
