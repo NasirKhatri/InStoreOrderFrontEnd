@@ -1,12 +1,28 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
-import { POSButton1 } from '../../Components/Button';
+import { POSButton1, IconButton } from '../../Components/Button';
 
 import globalStyles from '../../globalStyles';
 
 const POSPaymentScreen = ({navigation}) => {
+    const [showDatePicker, setShowDatePicker] = React.useState(false);
+    const [date, setDate] = React.useState(new Date());
+
+    const handleDateChange = (event, date) => {
+        const selectedDate = date;
+        setShowDatePicker(false);
+        setDate(selectedDate);
+
+    }
+
+    const dateYear = date.getFullYear();
+    const dateMonth = ('0' + date.getMonth(date)).slice(-2);
+    const dateDate = ('0' + date.getDate(date)).slice(-2);
+    const dateFormat = `${dateYear}-${dateMonth}-${dateDate}`;
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
@@ -16,7 +32,15 @@ const POSPaymentScreen = ({navigation}) => {
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flex: 1, marginRight: 8 }}>
                             <Text>Date</Text>
-                            <TextInput placeholder='Add Date Picker' style={globalStyles.input} />
+                            <View style={{...globalStyles.input, flexDirection: 'row', justifyContent: "space-between"}}>
+                            <IconButton name='calendar' onPress={() => setShowDatePicker(true)} color='blue' />
+                            
+                            {
+                                showDatePicker ? (<DateTimePicker mode='date' value={date} onChange={handleDateChange} />) : null
+                            }
+                            <Text style={{marginRight: 10, marginTop: 3}}>{dateFormat}</Text>
+                            </View>
+                            
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text>Customer</Text>
@@ -59,7 +83,7 @@ const POSPaymentScreen = ({navigation}) => {
                 <View style={{ flexDirection: 'row' }}>
                     <POSButton1 text="Back" onPress={() => navigation.goBack()} />
                     <POSButton1 text="Post" />
-                    <POSButton1 text="Post and Print" />
+                    <POSButton1 text="Post & Print" />
                 </View>
                 
             </View>
