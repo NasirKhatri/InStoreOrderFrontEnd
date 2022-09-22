@@ -125,4 +125,30 @@ export const getTaxTypesDetails = async () => {
     return data.data;
 }
 
+// Get item items of the supplier
+export const getCustomers = async (type) => {
+    const user = await getData('user');
+    const token = user.Token;
+    const url = `${BaseUrl}/customers/${user.ClientID}`;
+    const data = await axios.get(url, {
+        headers: {
+            authorization: `Bearer ${token}`,
+        }
+    });
+
+    if (type === 'dropdown') {
+        let customers = [];
+        data.data.forEach(element => {
+            customers.push({
+                name: element.CustomerName,
+                id: `${element.CustomerID}`
+            });
+        });
+        return customers;
+    }
+    else {
+        return data.data;
+    }
+}
+
 

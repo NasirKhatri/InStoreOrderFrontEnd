@@ -5,11 +5,16 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { POSButton1, IconButton } from '../../Components/Button';
 
+import { useQuery } from '@tanstack/react-query';
+import { getCustomers } from '../../SharedFunctions.js/GetQueries';
+
 import globalStyles from '../../globalStyles';
 
-const POSPaymentScreen = ({navigation}) => {
+const POSPaymentScreen = ({ navigation }) => {
     const [showDatePicker, setShowDatePicker] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
+
+    const { isLoading, data } = useQuery(['customers', 'dropdown'], () => getCustomers('dropdown'));
 
     const handleDateChange = (event, date) => {
         const selectedDate = date;
@@ -23,24 +28,30 @@ const POSPaymentScreen = ({navigation}) => {
     const dateDate = ('0' + date.getDate(date)).slice(-2);
     const dateFormat = `${dateYear}-${dateMonth}-${dateDate}`;
 
+    if(isLoading) {
+        return (
+            <></>
+        )
+    }
+
+    console.log(data);
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
             <View style={globalStyles.body}>
                 <View>
 
-
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flex: 1, marginRight: 8 }}>
                             <Text>Date</Text>
-                            <View style={{...globalStyles.input, flexDirection: 'row', justifyContent: "space-between"}}>
-                            <IconButton name='calendar' onPress={() => setShowDatePicker(true)} color='blue' />
-                            
-                            {
-                                showDatePicker ? (<DateTimePicker mode='date' value={date} onChange={handleDateChange} />) : null
-                            }
-                            <Text style={{marginRight: 10, marginTop: 3}}>{dateFormat}</Text>
+                            <View style={{ ...globalStyles.input, flexDirection: 'row', justifyContent: "space-between" }}>
+                                <IconButton name='calendar' onPress={() => setShowDatePicker(true)} color='blue' />
+                                {
+                                    showDatePicker ? (<DateTimePicker mode='date' value={date} onChange={handleDateChange} />) : null
+                                }
+                                <Text style={{ marginRight: 10, marginTop: 3 }}>{dateFormat}</Text>
                             </View>
-                            
+
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text>Customer</Text>
@@ -85,7 +96,7 @@ const POSPaymentScreen = ({navigation}) => {
                     <POSButton1 text="Post" />
                     <POSButton1 text="Post & Print" />
                 </View>
-                
+
             </View>
         </TouchableWithoutFeedback>
     )
