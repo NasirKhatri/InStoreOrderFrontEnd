@@ -93,7 +93,7 @@ const POSMainScreen = ({ navigation }) => {
                 <POSButton1 text={`I ${no_of_products}`} onPress={() => null} />
                 <POSButton1 text={`Q ${no_of_items_sold}`} onPress={() => null} />
                 <POSButton1 text={`${gross_price}`} onPress={() => null} />
-                <POSButton1 text='Details' onPress={() => navigation.navigate('POSDetail', {customerNo: customerNo, setCustomerNo: setCustomerNo, itemDetails: itemDetails})} />
+                <POSButton1 text='Details' onPress={() => navigation.navigate('POSDetail')} />
             </View>
             <View style={{ flexDirection: 'row' }}>
                 <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />

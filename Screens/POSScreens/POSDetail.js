@@ -8,6 +8,7 @@ import { POSButton1 } from '../../Components/Button';
 import { StoreContext } from '../../SharedFunctions.js/StoreContext';
 
 import globalStyles from '../../globalStyles';
+import { getOrderSummary } from '../../SharedFunctions.js/GetOrderSummary';
 
 const CustomerNoSection = () => {
 
@@ -54,38 +55,16 @@ const InvoiceDetailsSection = () => {
         itemDetails = storeData.invoices.invoice3_details;;
     }
 
-    let Products = 0;
-    let ItemsQty = 0;
-    let ItemDisc = 0;
-    let SubTotal = 0;
-    let TaxAmount = 0;
-    let TotalDiscount = 0;
-    let Total = 0;
+    let orderDetails = getOrderSummary(itemDetails);
 
-    const getDetails = (itemDetails) => {
-        Products = itemDetails.length;
-    
-    
-        if(itemDetails.length > 0) {
-            itemDetails.forEach((item) => {
-                ItemsQty += item.Qty;
-                SubTotal += item.Qty * item.SalesPrice;
-                if(!item.TaxBfrDisc) {
-                    ItemDisc += item.SalesPrice * (item.Discount / 100);
-                    TaxAmount += (item.SalesPrice - item.SalesPrice * (item.Discount / 100)) * (taxDetails.TaxRate / 100);
-                }
-                else {
-                    ItemDisc += item.SalesPrice * (item.Discount / 100);
-                    TaxAmount += item.SalesPrice * (item.TaxRate / 100);
-                }
-            })
-            TotalDiscount = (ItemDisc + Parsedvalue).toFixed(2);
-            Total = (SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2);
-        }
-    
-    };
+    let Products = orderDetails._Products;
+    let ItemsQty = orderDetails._ItemsQty;
+    let ItemDisc = orderDetails._ItemDisc;
+    let SubTotal = orderDetails._SubTotal;
+    let TaxAmount = orderDetails._TaxAmount;
+    let TotalDiscount = (ItemDisc + Parsedvalue).toFixed(2);
+    let Total = (SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2);
 
-    getDetails(itemDetails);
 
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 6, backgroundColor: 'lightblue', marginBottom: 6, marginTop: 6 }}>
@@ -120,7 +99,7 @@ const BottomButtonsSection = ({ navigation }) => {
     )
 }
 
-const POSDetailScreen = ({ route, navigation }) => {
+const POSDetailScreen = ({ navigation }) => {
     const storeData = useContext(StoreContext);
     const customerNo = storeData.customerNo;
 

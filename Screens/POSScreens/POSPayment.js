@@ -72,7 +72,7 @@ const POSPaymentScreen = ({ navigation }) => {
 
 
                     <View style={styles.receivables}>
-                        <Text style={styles.title}>Total Receivables: PKR 5850</Text>
+                        <Text style={styles.title}>PKR 5850</Text>
                     </View>
 
 
