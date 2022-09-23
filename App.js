@@ -30,7 +30,6 @@ export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [customerNo, setCustomerNo] = useState(1);
   const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
-  console.log(invoices);
 
   return (
     <QueryClientProvider client={queryClient}>

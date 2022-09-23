@@ -6,7 +6,6 @@ import { useContext } from 'react';
 import POSOrderline from '../../Components/POSOrderline';
 import { POSButton1 } from '../../Components/Button';
 import { StoreContext } from '../../SharedFunctions.js/StoreContext';
-import { GetItemDetails } from '../../SharedFunctions.js/GetInvoiceDetails';
 
 import globalStyles from '../../globalStyles';
 
@@ -60,6 +59,8 @@ const InvoiceDetailsSection = () => {
     let ItemDisc = 0;
     let SubTotal = 0;
     let TaxAmount = 0;
+    let TotalDiscount = 0;
+    let Total = 0;
 
     const getDetails = (itemDetails) => {
         Products = itemDetails.length;
@@ -78,11 +79,9 @@ const InvoiceDetailsSection = () => {
                     TaxAmount += item.SalesPrice * (item.TaxRate / 100);
                 }
             })
+            TotalDiscount = (ItemDisc + Parsedvalue).toFixed(2);
+            Total = (SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2);
         }
-
-        // ItemDisc = ItemDisc.toFixed(2);
-        // SubTotal = SubTotal.toFixed(2);
-        // TaxAmount = SubTotal.toFixed(2);
     
     };
 
@@ -102,8 +101,8 @@ const InvoiceDetailsSection = () => {
             <View style={{alignItems: "flex-start"}}>
                 <Text style={styles.title}>Sub Total: {SubTotal.toFixed(2)}</Text>
                 <Text style={styles.title}>Tax Amt: {TaxAmount.toFixed(2)}</Text>
-                <Text style={styles.title}>Total Disc: {(ItemDisc + Parsedvalue).toFixed(2)} </Text>
-                <Text style={styles.title}>Total: {(SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2)}</Text>
+                <Text style={styles.title}>Total Disc: {TotalDiscount} </Text>
+                <Text style={styles.title}>Total: {Total}</Text>
             </View>
         </View>
     )

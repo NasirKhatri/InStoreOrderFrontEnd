@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Dropdown } from 'react-native-element-dropdown';
 
 import { POSButton1, IconButton } from '../../Components/Button';
 
@@ -11,8 +12,10 @@ import { getCustomers } from '../../SharedFunctions.js/GetQueries';
 import globalStyles from '../../globalStyles';
 
 const POSPaymentScreen = ({ navigation }) => {
+
     const [showDatePicker, setShowDatePicker] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
+    const [customerID, setCustomerID] = React.useState(null);
 
     const { isLoading, data } = useQuery(['customers', 'dropdown'], () => getCustomers('dropdown'));
 
@@ -20,7 +23,6 @@ const POSPaymentScreen = ({ navigation }) => {
         const selectedDate = date;
         setShowDatePicker(false);
         setDate(selectedDate);
-
     }
 
     const dateYear = date.getFullYear();
@@ -34,7 +36,6 @@ const POSPaymentScreen = ({ navigation }) => {
         )
     }
 
-    console.log(data);
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -55,7 +56,17 @@ const POSPaymentScreen = ({ navigation }) => {
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text>Customer</Text>
-                            <TextInput placeholder='Add searchable picker' style={globalStyles.input} />
+                            <Dropdown
+                                style={{...globalStyles.input, paddingVertical: 0}}
+                                selectedTextStyle={{fontSize: 14}}
+                                itemTextStyle={{fontSize: 14}}
+                                data={data}
+                                search
+                                labelField='name'
+                                value={customerID}
+                                valueField='id'
+                                onChange={item => setCustomerID(item.id)}
+                                />
                         </View>
                     </View>
 
