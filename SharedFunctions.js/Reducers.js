@@ -89,3 +89,19 @@ export const invoiceUpdateReducer = (state, action) => {
 
     }
 }
+
+export const discountsUpdateReducer = (state, action) => {
+    let active_invoice = action.active_invoice;
+    let additionalDiscount = action.addDiscount ? action.addDiscount : 0;
+    switch(active_invoice) {
+        case 1:
+            return {...state, discount1: additionalDiscount}
+        case 2:
+            return {...state, discount2: additionalDiscount}
+        case 3:
+            return {...state, discount3: additionalDiscount}
+        default:
+            return state;
+    }
+
+}

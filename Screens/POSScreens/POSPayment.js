@@ -3,19 +3,23 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'reac
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
+import { useContext } from 'react';
 
 import { POSButton1, IconButton } from '../../Components/Button';
 
 import { useQuery } from '@tanstack/react-query';
 import { getCustomers } from '../../SharedFunctions.js/GetQueries';
+import { StoreContext } from '../../SharedFunctions.js/StoreContext';
+import { getOrderSummary } from '../../SharedFunctions.js/GetOrderSummary';
 
 import globalStyles from '../../globalStyles';
 
 const POSPaymentScreen = ({ navigation }) => {
-
     const [showDatePicker, setShowDatePicker] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
-    const [customerID, setCustomerID] = React.useState(null);
+    
+    const [cashPayment, setCashPayment] = React.useState(0);
+    const [cardPayment, setCardPayment] = React.useState(0);
 
     const { isLoading, data } = useQuery(['customers', 'dropdown'], () => getCustomers('dropdown'));
 
@@ -35,6 +39,34 @@ const POSPaymentScreen = ({ navigation }) => {
             <></>
         )
     }
+    
+    const [customerID, setCustomerID] = React.useState(data ? data[0].id : null);
+
+    const storeData = useContext(StoreContext);
+    const customerNo = storeData.customerNo;
+    const discounts = storeData.discounts;
+    let addDisc = customerNo === 1 ? discounts.discount1 : customerNo === 2 ? discounts.discount2 : discounts.discount3;
+
+    let itemDetails = [];
+    if (customerNo === 1) {
+        itemDetails = storeData.invoices.invoice1_details;
+    }
+    else if (customerNo === 2) {
+        itemDetails = storeData.invoices.invoice2_details;
+    }
+    else {
+        itemDetails = storeData.invoices.invoice3_details;;
+    }
+
+    let orderDetails = getOrderSummary(itemDetails);
+
+    let Products = orderDetails._Products;
+    let ItemsQty = orderDetails._ItemsQty;
+    let ItemDisc = orderDetails._ItemDisc;
+    let SubTotal = orderDetails._SubTotal;
+    let TaxAmount = orderDetails._TaxAmount;
+    let TotalDiscount = (ItemDisc + parseFloat(addDisc)).toFixed(2);
+    let Total = (SubTotal + TaxAmount - TotalDiscount).toFixed(2);
 
 
     return (
@@ -72,25 +104,25 @@ const POSPaymentScreen = ({ navigation }) => {
 
 
                     <View style={styles.receivables}>
-                        <Text style={styles.title}>PKR 5850</Text>
+                        <Text style={styles.title}>PKR {Total}</Text>
                     </View>
 
 
                     <View style={{ flexDirection: 'row', marginTop: 10 }}>
                         <View style={{ flex: 1, marginRight: 8 }}>
                             <Text>Cash</Text>
-                            <TextInput placeholder='Enter Amount' style={globalStyles.input} keyboardType="numeric" />
+                            <TextInput placeholder='Enter Amount' value={cashPayment} onChangeText={(value) => value ? setCashPayment(parseFloat(value)) : 0} style={globalStyles.input} keyboardType="numeric" />
                         </View>
                         <View style={{ flex: 1 }}>
                             <Text>Card</Text>
-                            <TextInput placeholder='Enter Amount' style={globalStyles.input} keyboardType="numeric" />
+                            <TextInput placeholder='Enter Amount' value={cardPayment} onChangeText={(value) => value ? setCardPayment(parseFloat(value)) : 0} style={globalStyles.input} keyboardType="numeric" />
                         </View>
                     </View>
 
 
                     <View style={{ marginTop: 8 }}>
                         <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Return Cash</Text>
-                        <Text style={styles.balanceAmount}>150</Text>
+                        <Text style={styles.balanceAmount}>{(cardPayment + cashPayment - Total).toFixed(2)}</Text>
                     </View>
 
 

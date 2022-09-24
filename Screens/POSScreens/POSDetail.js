@@ -41,8 +41,12 @@ const OrderLinesHeaderSection = () => {
 const InvoiceDetailsSection = () => {
     const storeData = useContext(StoreContext);
     const customerNo = storeData.customerNo;
-    const [addDisc, setAddDisc] = React.useState(0);
-    const Parsedvalue = addDisc ? parseFloat(addDisc) : 0;
+    const discounts = storeData.discounts;
+    let addDisc = customerNo === 1 ? discounts.discount1 : customerNo === 2 ? discounts.discount2 : discounts.discount3;
+    console.log(addDisc);
+    
+    //const [addDisc, setAddDisc] = React.useState(0);
+    //const Parsedvalue = addDisc ? parseFloat(addDisc) : 0;
 
     let itemDetails = [];
     if (customerNo === 1) {
@@ -62,8 +66,8 @@ const InvoiceDetailsSection = () => {
     let ItemDisc = orderDetails._ItemDisc;
     let SubTotal = orderDetails._SubTotal;
     let TaxAmount = orderDetails._TaxAmount;
-    let TotalDiscount = (ItemDisc + Parsedvalue).toFixed(2);
-    let Total = (SubTotal + TaxAmount - ItemDisc - Parsedvalue).toFixed(2);
+    let TotalDiscount = (ItemDisc + parseFloat(addDisc)).toFixed(2);
+    let Total = (SubTotal + TaxAmount - TotalDiscount).toFixed(2);
 
 
     return (
@@ -74,7 +78,7 @@ const InvoiceDetailsSection = () => {
                 <Text style={styles.title}>Item Disc: {ItemDisc.toFixed(2)}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text style={styles.title}>Add Disc:</Text>
-                    <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} value={Parsedvalue} onChangeText={setAddDisc} />
+                    <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} onChangeText={(value) => storeData.dispatchDiscount({ active_invoice: customerNo, addDiscount: parseFloat(value)})} />
                 </View>
             </View>
             <View style={{alignItems: "flex-start"}}>

@@ -15,25 +15,44 @@ import KitchenStack from './Routes/KitchenStack';
 import SettingsStack from './Routes/SettingStack';
 import { StoreContext } from './SharedFunctions.js/StoreContext';
 import { invoiceUpdateReducer } from './SharedFunctions.js/Reducers';
+import { discountsUpdateReducer } from './SharedFunctions.js/Reducers';
 
 const Drawer = createDrawerNavigator();
 
 const queryClient = new QueryClient();
- 
+
 const all_invoice_details = {
   invoice1_details: [],
   invoice2_details: [],
   invoice3_details: [],
 }
 
+const additional_discounts = {
+  discount1: 0,
+  discount2: 0,
+  discount3: 0
+}
+
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [customerNo, setCustomerNo] = useState(1);
   const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
+  const [addDiscounts, setAddDiscounts] = useReducer(discountsUpdateReducer, additional_discounts);
+
+  console.log(addDiscounts);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <StoreContext.Provider value={{ isLoggedin: isLoggedIn, customerNo: customerNo, setCustomerNo: setCustomerNo, setLoggedIn: setLoggedIn, invoices: invoices, dispatchInvoice: dispatch }}>
+      <StoreContext.Provider value={{
+        isLoggedin: isLoggedIn,
+        customerNo: customerNo,
+        setCustomerNo: setCustomerNo,
+        setLoggedIn: setLoggedIn,
+        invoices: invoices,
+        dispatchInvoice: dispatch,
+        discounts: addDiscounts,
+        dispatchDiscount: setAddDiscounts
+      }}>
         <NavigationContainer>
           {
             !isLoggedIn ? <LoginSubscribeStack /> :
