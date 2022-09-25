@@ -7,14 +7,19 @@ import { useContext } from 'react';
 
 import { POSButton1, IconButton } from '../../Components/Button';
 
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { getCustomers } from '../../SharedFunctions.js/GetQueries';
 import { StoreContext } from '../../SharedFunctions.js/StoreContext';
 import { getOrderSummary } from '../../SharedFunctions.js/GetOrderSummary';
+import { addRequest } from '../../SharedFunctions.js/AddRequest';
 
 import globalStyles from '../../globalStyles';
+import { getData } from '../../SharedFunctions.js/SetGetData';
 
-const POSPaymentScreen = ({ navigation }) => {
+const POSPaymentScreen =  ({ navigation }) => {
+   // const user = await getData("user");
+    const mutation = useMutation((values) => addRequest(values, `sales/29`)); //Client ID to Be Fix ..........//
+    
     const [showDatePicker, setShowDatePicker] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
     
@@ -27,6 +32,7 @@ const POSPaymentScreen = ({ navigation }) => {
         const selectedDate = date;
         setShowDatePicker(false);
         setDate(selectedDate);
+        navigation.navigate('POSMain'); // Navigation Not Working to Be Fix......//
     }
 
     const dateYear = date.getFullYear();
@@ -34,12 +40,6 @@ const POSPaymentScreen = ({ navigation }) => {
     const dateDate = ('0' + date.getDate(date)).slice(-2);
     const dateFormat = `${dateYear}-${dateMonth}-${dateDate}`;
 
-    if(isLoading) {
-        return (
-            <></>
-        )
-    }
-    
     const [customerID, setCustomerID] = React.useState(data ? data[0].id : null);
 
     const storeData = useContext(StoreContext);
@@ -65,9 +65,43 @@ const POSPaymentScreen = ({ navigation }) => {
     let ItemDisc = orderDetails._ItemDisc;
     let SubTotal = orderDetails._SubTotal;
     let TaxAmount = orderDetails._TaxAmount;
+    let receivedAmount = parseFloat(cashPayment) + parseFloat(cardPayment);
     let TotalDiscount = (ItemDisc + parseFloat(addDisc)).toFixed(2);
     let Total = (SubTotal + TaxAmount - TotalDiscount).toFixed(2);
+    let returnedAmount = receivedAmount - Total;
 
+    const requestBody = {
+        itemDetails: itemDetails,
+        saleDate: dateFormat + ' 23:59:59',
+        paymentMode: cashPayment && cardPayment ? "Both" : cashPayment ? "Cash" : "Card",
+        receivedAmount: receivedAmount,
+        total: parseFloat(Total),
+        returnedAmount: returnedAmount,
+        balance: 0,
+        customerID: customerID,
+        products: Products,
+        itemsQty: ItemsQty,
+        subTotal: SubTotal,
+        itemDisc: ItemDisc,
+        additionalDiscount: parseFloat(addDisc),
+        taxAmount: TaxAmount,
+        saleTypeID: 1, //Take Away Sale
+        paymentStatus: "Paid",
+        statusCode: 1, //Cooking
+    }
+
+    
+    const handlePost = (values) => {
+        mutation.mutateAsync(values);
+        storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo });
+        storeData.dispatchDiscount({active_invoice: customerNo, addDiscount: 0});
+    }
+
+    if(isLoading) {
+        return (
+            <></>
+        )
+    }
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -136,10 +170,9 @@ const POSPaymentScreen = ({ navigation }) => {
 
                 <View style={{ flexDirection: 'row' }}>
                     <POSButton1 text="Back" onPress={() => navigation.goBack()} />
-                    <POSButton1 text="Post" />
+                    <POSButton1 text="Post" onPress={() => handlePost(requestBody)} />
                     <POSButton1 text="Post & Print" />
                 </View>
-
             </View>
         </TouchableWithoutFeedback>
     )

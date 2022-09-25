@@ -43,10 +43,6 @@ const InvoiceDetailsSection = () => {
     const customerNo = storeData.customerNo;
     const discounts = storeData.discounts;
     let addDisc = customerNo === 1 ? discounts.discount1 : customerNo === 2 ? discounts.discount2 : discounts.discount3;
-    console.log(addDisc);
-    
-    //const [addDisc, setAddDisc] = React.useState(0);
-    //const Parsedvalue = addDisc ? parseFloat(addDisc) : 0;
 
     let itemDetails = [];
     if (customerNo === 1) {

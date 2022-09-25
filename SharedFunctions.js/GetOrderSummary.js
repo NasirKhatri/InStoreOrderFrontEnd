@@ -12,12 +12,12 @@ export function getOrderSummary(itemDetails) {
             ItemsQty += item.Qty;
             SubTotal += item.Qty * item.SalesPrice;
             if (!item.TaxBfrDisc) {
-                ItemDisc += item.SalesPrice * (item.Discount / 100);
-                TaxAmount += (item.SalesPrice - item.SalesPrice * (item.Discount / 100)) * (taxDetails.TaxRate / 100);
+                ItemDisc += (item.SalesPrice * (item.Discount / 100))*item.Qty;
+                TaxAmount += ((item.SalesPrice - item.SalesPrice * (item.Discount / 100)) * (taxDetails.TaxRate / 100))*item.Qty;
             }
             else {
-                ItemDisc += item.SalesPrice * (item.Discount / 100);
-                TaxAmount += item.SalesPrice * (item.TaxRate / 100);
+                ItemDisc += (item.SalesPrice * (item.Discount / 100))*item.Qty;
+                TaxAmount += (item.SalesPrice * (item.TaxRate / 100)) * item.Qty;
             }
         })
     }

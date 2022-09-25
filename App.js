@@ -39,7 +39,7 @@ export default function App() {
   const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
   const [addDiscounts, setAddDiscounts] = useReducer(discountsUpdateReducer, additional_discounts);
 
-  console.log(addDiscounts);
+  console.log(invoices);
 
   return (
     <QueryClientProvider client={queryClient}>
