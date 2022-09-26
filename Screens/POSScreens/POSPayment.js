@@ -17,9 +17,16 @@ import globalStyles from '../../globalStyles';
 import { getData } from '../../SharedFunctions.js/SetGetData';
 
 const POSPaymentScreen =  ({ navigation }) => {
-   // const user = await getData("user");
-    const mutation = useMutation((values) => addRequest(values, `sales/29`)); //Client ID to Be Fix ..........//
+    const [clientID, setClientID] = React.useState(null);
+    const mutation = useMutation((values) => addRequest(values, `sales/${clientID}`));
     
+    React.useEffect(() => {
+        (async () => {
+            const user = await getData("user");
+            setClientID(user.ClientID);
+        })()
+    }, []);
+
     const [showDatePicker, setShowDatePicker] = React.useState(false);
     const [date, setDate] = React.useState(new Date());
     
@@ -32,7 +39,6 @@ const POSPaymentScreen =  ({ navigation }) => {
         const selectedDate = date;
         setShowDatePicker(false);
         setDate(selectedDate);
-        navigation.navigate('POSMain'); // Navigation Not Working to Be Fix......//
     }
 
     const dateYear = date.getFullYear();
@@ -72,7 +78,7 @@ const POSPaymentScreen =  ({ navigation }) => {
 
     const requestBody = {
         itemDetails: itemDetails,
-        saleDate: dateFormat + ' 23:59:59',
+        saleDate: dateFormat,
         paymentMode: cashPayment && cardPayment ? "Both" : cashPayment ? "Cash" : "Card",
         receivedAmount: receivedAmount,
         total: parseFloat(Total),
@@ -95,6 +101,7 @@ const POSPaymentScreen =  ({ navigation }) => {
         mutation.mutateAsync(values);
         storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo });
         storeData.dispatchDiscount({active_invoice: customerNo, addDiscount: 0});
+        navigation.navigate('POSMain');
     }
 
     if(isLoading) {
