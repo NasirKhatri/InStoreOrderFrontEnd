@@ -23,9 +23,9 @@ const POSStack = ({ navigation }) => {
 
     return (
         <Stack.Navigator screenOptions={{...globalStyles.AppBar, headerRight}}>
-            <Stack.Screen name="POSMain" component={POSMainScreen} options={{headerLeft}}/>
-            <Stack.Screen name="POSDetail" component={POSDetailScreen}/>
-            <Stack.Screen name="POSPayment" component={POSPaymentScreen}/>
+            <Stack.Screen name="POSMain" component={POSMainScreen} options={{title: "POS", headerLeft}}/>
+            <Stack.Screen name="POSDetail" component={POSDetailScreen} options={{title: "Details"}}/>
+            <Stack.Screen name="POSPayment" component={POSPaymentScreen} options={{title: "Payment"}}/>
         </Stack.Navigator>
     )
 }
