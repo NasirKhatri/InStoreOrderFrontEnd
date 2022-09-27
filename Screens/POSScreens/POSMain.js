@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, TextInput, FlatList } from 'react-native';
+import { View, Text, TextInput, FlatList, Alert } from 'react-native';
 import { StyleSheet } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 import { getCategories, getItems } from '../../SharedFunctions.js/GetQueries';
@@ -42,6 +42,25 @@ const POSMainScreen = ({ navigation }) => {
     }
 
     gross_price = gross_price.toFixed(2);
+
+    const handleClear = () => {
+        if(itemDetails.length > 0) {
+            Alert.alert('Instore Order', 'Are you sure to clear details?', [
+                {
+                  text: 'Cancel',
+                  onPress: () => null,
+                  style: 'cancel',
+                },
+                { text: 'Yes', onPress: () => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo }) },
+              ]);
+        }
+    }
+
+    const handlePay = () => {
+        if(itemDetails.length > 0 ) {
+            navigation.navigate('POSPayment');
+        }
+    }
 
 
     if(categories.isLoading || items.isLoading) {
@@ -96,10 +115,10 @@ const POSMainScreen = ({ navigation }) => {
                 <POSButton1 text='Details' onPress={() => navigation.navigate('POSDetail')} />
             </View>
             <View style={{ flexDirection: 'row' }}>
-                <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
+                <POSButton1 text='Clear' onPress={handleClear} />
                 <POSButton1 text='Dine In' onPress={() => null} />
                 <POSButton1 text='Online' onPress={() => null} />
-                <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
+                <POSButton1 text='Pay' onPress={handlePay} />
             </View>
         </View>
     )

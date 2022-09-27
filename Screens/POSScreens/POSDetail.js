@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { useContext } from 'react';
 
@@ -87,14 +87,34 @@ const InvoiceDetailsSection = () => {
     )
 }
 
-const BottomButtonsSection = ({ navigation }) => {
+const BottomButtonsSection = ({ navigation, itemDetails }) => {
     const storeData = useContext(StoreContext);
     const customerNo = storeData.customerNo;
+
+    const handleClear = () => {
+        if(itemDetails.length > 0) {
+            Alert.alert('Instore Order', 'Are you sure to clear details?', [
+                {
+                  text: 'Cancel',
+                  onPress: () => null,
+                  style: 'cancel',
+                },
+                { text: 'Yes', onPress: () => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo }) },
+              ]);
+        }
+    }
+
+    const handlePay = () => {
+        if(itemDetails.length > 0 ) {
+            navigation.navigate('POSPayment');
+        }
+    }
+
     return (
         <View style={{ flexDirection: 'row' }}>
             <POSButton1 text='Back' onPress={() => navigation.goBack()} />
-            <POSButton1 text='Clear' onPress={() => storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo })} />
-            <POSButton1 text='Pay' onPress={() => navigation.navigate('POSPayment')} />
+            <POSButton1 text='Clear' onPress={handleClear} />
+            <POSButton1 text='Pay' onPress={handlePay} />
         </View>
     )
 }
@@ -113,6 +133,7 @@ const POSDetailScreen = ({ navigation }) => {
     else {
         itemDetails = storeData.invoices.invoice3_details;;
     }
+    
 
     return (
         <View style={{ ...globalStyles.body, paddingHorizontal: 4, paddingTop: 4 }}>
@@ -125,7 +146,7 @@ const POSDetailScreen = ({ navigation }) => {
                 removeClippedSubviews={false}
             />
             <InvoiceDetailsSection />
-            <BottomButtonsSection navigation={navigation} />
+            <BottomButtonsSection navigation={navigation} itemDetails={itemDetails} />
         </View>
     )
 }

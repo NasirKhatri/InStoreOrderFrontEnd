@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Dropdown } from 'react-native-element-dropdown';
@@ -98,10 +98,15 @@ const POSPaymentScreen =  ({ navigation }) => {
 
     
     const handlePost = (values) => {
-        mutation.mutateAsync(values);
-        storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo });
-        storeData.dispatchDiscount({active_invoice: customerNo, addDiscount: 0});
-        navigation.navigate('POSMain');
+        if(values.receivedAmount >= values.total) {
+            mutation.mutateAsync(values);
+            storeData.dispatchInvoice({ type: 'clear', active_invoice: customerNo });
+            storeData.dispatchDiscount({active_invoice: customerNo, addDiscount: 0});
+            navigation.navigate('POSMain');
+        }
+        else {
+            Alert.alert("Instore Order", "Payment must be greater than or equal to the bill amount");
+        }
     }
 
     if(isLoading) {
@@ -178,7 +183,7 @@ const POSPaymentScreen =  ({ navigation }) => {
                 <View style={{ flexDirection: 'row' }}>
                     <POSButton1 text="Back" onPress={() => navigation.goBack()} />
                     <POSButton1 text="Post" onPress={() => handlePost(requestBody)} />
-                    <POSButton1 text="Post & Print" />
+                    <POSButton1 text="Post & Print" onPress={() => handlePost(requestBody)} />
                 </View>
             </View>
         </TouchableWithoutFeedback>
