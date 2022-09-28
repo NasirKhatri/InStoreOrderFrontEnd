@@ -1,6 +1,7 @@
 const increase = 'increase';
 const decrease = 'decrease';
 const deleteitem = 'delete';
+const setQty = 'setQty';
 const clear = 'clear';
 
 export const invoiceUpdateReducer = (state, action) => {
@@ -49,6 +50,15 @@ export const invoiceUpdateReducer = (state, action) => {
                 break;
             }
             break;
+        case setQty:
+            if(action.qty > 0) {
+                tempArray[ItemIndex].Qty = parseInt(action.qty);
+                break;
+            }
+            else {
+                tempArray[ItemIndex].Qty = 1;
+                break;
+            }
         case deleteitem:
             tempArray.splice(ItemIndex, 1);
             tempArray = Object.assign([], tempArray);
@@ -56,6 +66,7 @@ export const invoiceUpdateReducer = (state, action) => {
         case clear:
             tempArray = Object.assign([], []);
             break;
+        
         default:
             return state;
     }

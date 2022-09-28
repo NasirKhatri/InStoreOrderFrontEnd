@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { View, Text, StyleSheet, FlatList, Alert, TextInput } from 'react-native';
+//import { TextInput } from 'react-native-gesture-handler';
 import { useContext } from 'react';
 
 import POSOrderline from '../../Components/POSOrderline';
@@ -65,7 +65,6 @@ const InvoiceDetailsSection = () => {
     let TotalDiscount = (ItemDisc + parseFloat(addDisc)).toFixed(2);
     let Total = (SubTotal + TaxAmount - TotalDiscount).toFixed(2);
 
-
     return (
         <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 6, backgroundColor: 'lightblue', marginBottom: 6, marginTop: 6 }}>
             <View style={{alignItems: "flex-start"}}>
@@ -74,7 +73,7 @@ const InvoiceDetailsSection = () => {
                 <Text style={styles.title}>Item Disc: {ItemDisc.toFixed(2)}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <Text style={styles.title}>Add Disc:</Text>
-                    <TextInput placeholder='??' keyboardType='numeric' style={{ paddingHorizontal: 5 }} onChangeText={(value) => storeData.dispatchDiscount({ active_invoice: customerNo, addDiscount: parseFloat(value)})} />
+                    <TextInput placeholder='??' keyboardType='numeric'  value={addDisc} style={{ paddingHorizontal: 5 }} onChangeText={(value) => storeData.dispatchDiscount({ active_invoice: customerNo, addDiscount: parseFloat(value)})} />
                 </View>
             </View>
             <View style={{alignItems: "flex-start"}}>
