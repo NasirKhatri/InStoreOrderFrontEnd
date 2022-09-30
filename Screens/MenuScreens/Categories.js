@@ -1,36 +1,36 @@
 import * as React from 'react';
-import { View, FlatList, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import globalStyles from '../../globalStyles';
+import { View, FlatList } from 'react-native';
+import { useQuery } from '@tanstack/react-query';
 
+import globalStyles from '../../globalStyles';
 import { CartButton } from '../../Components/Button.js';
 import CategoryCard from '../../Components/CategoryCard';
+import { getCategories } from '../../SharedFunctions.js/GetQueries';
 
 
 const CategoriesScreen = ({ navigation }) => {
-    const categories = [
-        { key: '1' },
-        { key: '2' },
-        { key: '3' },
-        { key: '4' },
-        { key: '5' },
-        { key: '6' },
-        { key: '7' },
-        { key: '8' },
-        { key: '9' },
-        { key: '10' },
-    ];
+    const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories());
 
-    return (
-        <View style={globalStyles.body}>
+    if (cloading) {
+        return (
+            <></>
+        )
+    }
+
+    else {
+        return (
+            <View style={globalStyles.body}>
                 <FlatList
                     columnWrapperStyle={{ justifyContent: 'space-around' }}
-                    data={categories}
+                    data={cdata}
                     numColumns={3}
-                    renderItem={({ item }) => <CategoryCard onPress={() => navigation.navigate('Items')} />}
+                    keyExtractor={category => category.CategoryID}
+                    renderItem={({item}) => <CategoryCard item={item} onPress={() => navigation.navigate('Items')} />}
                 />
                 <CartButton text='View Cart' onPress={() => navigation.navigate('Cart')} />
-        </View>
-    )
+            </View>
+        )
+    }
 }
 
 export default CategoriesScreen;

@@ -1,13 +1,15 @@
 import React from "react";
 import { Box } from "@react-native-material/core";
 import { TouchableOpacity, Text, StyleSheet, Image } from "react-native";
+import { BaseUrl } from "../SharedFunctions.js/StoreContext";
 
-const CategoryCard = ({ onPress }) => {
+const CategoryCard = ({ item, onPress }) => {
+    const imageUrl = `${BaseUrl}/${item.ImageSrc}`;
     return (
         <TouchableOpacity onPress={onPress}> 
             <Box w={100} h={130} m={4} style={styles.Box} >
-                <Text style={styles.Title}>Sandwitches</Text>
-                <Image style={styles.image} source={require('../assets/images/Sandwich.png')} />
+                <Text style={styles.Title}>{item.CategoryName}</Text>
+                <Image style={styles.image} source={{uri: imageUrl}} />
             </Box>
         </TouchableOpacity>
     )
