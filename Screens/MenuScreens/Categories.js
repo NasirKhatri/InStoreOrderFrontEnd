@@ -9,7 +9,7 @@ import { getCategories } from '../../SharedFunctions.js/GetQueries';
 
 
 const CategoriesScreen = ({ navigation }) => {
-    const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories());
+    const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories("POS"));
 
     if (cloading) {
         return (
@@ -21,11 +21,11 @@ const CategoriesScreen = ({ navigation }) => {
         return (
             <View style={globalStyles.body}>
                 <FlatList
-                    columnWrapperStyle={{ justifyContent: 'space-around' }}
+                    columnWrapperStyle={{ justifyContent: 'flex-start'}}
                     data={cdata}
                     numColumns={3}
                     keyExtractor={category => category.CategoryID}
-                    renderItem={({item}) => <CategoryCard item={item} onPress={() => navigation.navigate('Items')} />}
+                    renderItem={({item}) => <CategoryCard item={item} onPress={() => navigation.navigate('Items', {categoryID: item.CategoryID})} />}
                 />
                 <CartButton text='View Cart' onPress={() => navigation.navigate('Cart')} />
             </View>
