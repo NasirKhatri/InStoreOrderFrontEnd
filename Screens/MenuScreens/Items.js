@@ -10,7 +10,7 @@ import { getItems } from '../../SharedFunctions.js/GetQueries';
 const ItemsScreen = ({ route, navigation }) => {
     const { categoryID } = route.params;
     const items = useQuery(['Items', 'Details'], () => getItems());
-    console.log(items);
+
     let filteredItems;
 
     if(items.isLoading) {

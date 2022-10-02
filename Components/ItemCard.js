@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import { IconButton, RoundButton } from "./Button";
 import { BaseUrl } from "../SharedFunctions.js/StoreContext";
+import { StoreContext } from "../SharedFunctions.js/StoreContext";
 
 //type mean either item card is being displayed for 'items list (item Screen)' or 'cart items (cart screen)'  
 const ItemCard = ({ type, item }) => {
+    const storeData = useContext(StoreContext);
     const imageUrl = `${BaseUrl}/${item.ImageSrc}`;
     return (
         <View style={styles.Box} >
@@ -21,7 +23,7 @@ const ItemCard = ({ type, item }) => {
                     <View style={{ width: 64, height: 32, borderWidth: 1, borderColor: 'lightgray', borderRadius: 16, marginHorizontal: 5 }}>
                         <Text style={{ textAlign: 'center', paddingTop: 5 }}>6</Text>
                     </View>
-                    <RoundButton text='+' />
+                    <RoundButton text='+' onPress={() => storeData.dispatchDineInOrders({type: "add", itemDetails: item, tableNumber: 1}) }/>
                 </View>
             </View>
         </View>

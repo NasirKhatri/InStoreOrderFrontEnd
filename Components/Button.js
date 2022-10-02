@@ -25,9 +25,9 @@ export function CartButton({text, onPress}) {
   );
 }
 
-export function RoundButton({text}) {
+export function RoundButton({text, onPress}) {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
     <View style={styles.Roundbutton}>
       <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 22}}>{text}</Text>
     </View>

@@ -118,5 +118,11 @@ export const discountsUpdateReducer = (state, action) => {
 }
 
 export const dineInOrdersReducers = (state, action) => {
-    
+    const itemDetails = action.itemDetails;
+    const tableNumber = action.tableNumber;
+    const type = action.type;
+
+    if(!state.tableNumber) {
+        
+    }
 }
