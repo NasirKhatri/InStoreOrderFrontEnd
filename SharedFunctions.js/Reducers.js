@@ -116,3 +116,7 @@ export const discountsUpdateReducer = (state, action) => {
     }
 
 }
+
+export const dineInOrdersReducers = (state, action) => {
+    
+}

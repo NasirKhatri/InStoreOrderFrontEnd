@@ -5,13 +5,17 @@ import { useQuery } from '@tanstack/react-query';
 import globalStyles from '../../globalStyles';
 import { CartButton } from '../../Components/Button.js';
 import CategoryCard from '../../Components/CategoryCard';
-import { getCategories } from '../../SharedFunctions.js/GetQueries';
+import { getCategories, getTables } from '../../SharedFunctions.js/GetQueries';
+import { Dropdown } from '../../Components/Dropdown';
 
 
 const CategoriesScreen = ({ navigation }) => {
     const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories("POS"));
+    const branchNo = 15; // Branch Number should not be fixed need to be fixed later
+    const { isLoading: tloading, data: tdata} = useQuery(['tables', branchNo], () => getTables("dropdown", branchNo));
+    const [table, setTable] = React.useState(null);
 
-    if (cloading) {
+    if (cloading || tloading) {
         return (
             <></>
         )
@@ -20,6 +24,9 @@ const CategoriesScreen = ({ navigation }) => {
     else {
         return (
             <View style={globalStyles.body}>
+                <View style={{marginBottom : 15}}>
+                <Dropdown value={table} setValue={setTable} data={!tloading ? tdata : []} />
+                </View>
                 <FlatList
                     columnWrapperStyle={{ justifyContent: 'flex-start'}}
                     data={cdata}

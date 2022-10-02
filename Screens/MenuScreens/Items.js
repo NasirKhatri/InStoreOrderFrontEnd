@@ -13,19 +13,6 @@ const ItemsScreen = ({ route, navigation }) => {
     console.log(items);
     let filteredItems;
 
-    // const items = [
-    //     { key: '1' },
-    //     { key: '2' },
-    //     { key: '3' },
-    //     { key: '4' },
-    //     { key: '5' },
-    //     { key: '6' },
-    //     { key: '7' },
-    //     { key: '8' },
-    //     { key: '9' },
-    //     { key: '10' },
-    // ];
-
     if(items.isLoading) {
         return (
             <></>
@@ -34,7 +21,6 @@ const ItemsScreen = ({ route, navigation }) => {
 
     else {
         filteredItems = items.data.filter(item => item.CategoryID === categoryID);
-        console.log(filteredItems);
         return (
             <View style={globalStyles.body}>
                 <FlatList

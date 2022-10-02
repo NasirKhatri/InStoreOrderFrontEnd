@@ -16,6 +16,7 @@ import SettingsStack from './Routes/SettingStack';
 import { StoreContext } from './SharedFunctions.js/StoreContext';
 import { invoiceUpdateReducer } from './SharedFunctions.js/Reducers';
 import { discountsUpdateReducer } from './SharedFunctions.js/Reducers';
+import { dineInOrdersReducers } from './SharedFunctions.js/Reducers';
 
 const Drawer = createDrawerNavigator();
 
@@ -33,23 +34,28 @@ const additional_discounts = {
   discount3: 0
 }
 
+const dineInOrdersBody = {}
+
 export default function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const [customerNo, setCustomerNo] = useState(1);
   const [invoices, dispatch] = useReducer(invoiceUpdateReducer, all_invoice_details);
   const [addDiscounts, setAddDiscounts] = useReducer(discountsUpdateReducer, additional_discounts);
+  const [dineInOrders, dispatchDineInOrders] = useReducer(dineInOrdersReducers, dineInOrdersBody);
 
   return (
     <QueryClientProvider client={queryClient}>
       <StoreContext.Provider value={{
         isLoggedin: isLoggedIn,
+        setLoggedIn: setLoggedIn,
         customerNo: customerNo,
         setCustomerNo: setCustomerNo,
-        setLoggedIn: setLoggedIn,
         invoices: invoices,
         dispatchInvoice: dispatch,
         discounts: addDiscounts,
-        dispatchDiscount: setAddDiscounts
+        dispatchDiscount: setAddDiscounts,
+        dineInOrders: dineInOrders,
+        dispatchDineInOrders: dispatchDineInOrders,
       }}>
         <NavigationContainer>
           {

@@ -125,7 +125,7 @@ export const getTaxTypesDetails = async () => {
     return data.data;
 }
 
-// Get item items of the supplier
+// Get customers of the supplier
 export const getCustomers = async (type) => {
     const user = await getData('user');
     const token = user.Token;
@@ -145,6 +145,33 @@ export const getCustomers = async (type) => {
             });
         });
         return customers;
+    }
+    else {
+        return data.data;
+    }
+}
+
+// Get Tables of the client for specific branch
+export const getTables = async (type, branchID) => {
+    const user = await getData('user');
+    const token = user.Token;
+    const url = `${BaseUrl}/tables/${user.ClientID}/branch/${branchID}`;
+    const data = await axios.get(url, {
+        headers: {
+            authorization: `Bearer ${token}`,
+        }
+    });
+
+    let tables = [];
+    data.data.forEach(element => {
+        tables.push({
+            name: element.TableName,
+            id: `${element.TableID}`
+        });
+    });
+
+    if (type = 'dropdown') {
+        return tables;
     }
     else {
         return data.data;
