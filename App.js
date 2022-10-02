@@ -17,6 +17,9 @@ import { StoreContext } from './SharedFunctions.js/StoreContext';
 import { invoiceUpdateReducer } from './SharedFunctions.js/Reducers';
 import { discountsUpdateReducer } from './SharedFunctions.js/Reducers';
 import { dineInOrdersReducers } from './SharedFunctions.js/Reducers';
+import { CustomDrawer } from './Components/CustomDrawer';
+import { IconButton } from './Components/Button';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Drawer = createDrawerNavigator();
 
@@ -60,12 +63,39 @@ export default function App() {
         <NavigationContainer>
           {
             !isLoggedIn ? <LoginSubscribeStack /> :
-              <Drawer.Navigator screenOptions={{ headerShown: false }}>
-                <Drawer.Screen name="Dashboard" component={DashboardStack} />
-                <Drawer.Screen name="Menu" component={MenuStack} />
-                <Drawer.Screen name='POS' component={POSStack} />
-                <Drawer.Screen name='Kitchen' component={KitchenStack} />
-                <Drawer.Screen name='Setup' component={SettingsStack} />
+              <Drawer.Navigator 
+                drawerContent={props => <CustomDrawer {...props}/>} 
+                screenOptions={{ 
+                  headerShown: false, 
+                  drawerLabelStyle: {marginLeft: -20},
+                  drawerActiveBackgroundColor: '#0080FF',
+                  drawerActiveTintColor: 'white',
+                  drawerInactiveTintColor: '#0080FF' }}>
+                <Drawer.Screen name="Dashboard" component={DashboardStack} options={{
+                  drawerIcon: ({color}) => (
+                    <IconButton name="tablet-dashboard" color={color} size={22}/>
+                  )
+                }} />
+                <Drawer.Screen name="Menu" component={MenuStack} options={{
+                  drawerIcon: ({color}) => (
+                    <IconButton name="food" color={color} size={22}/>
+                  )
+                }}/>
+                <Drawer.Screen name='POS' component={POSStack} options={{
+                  drawerIcon: ({color}) => (
+                    <IconButton name="point-of-sale" color={color} size={22}/>
+                  )
+                }} />
+                <Drawer.Screen name='Kitchen' component={KitchenStack} options={{
+                  drawerIcon: ({color}) => (
+                    <IconButton name="chef-hat" color={color} size={22}/>
+                  )
+                }}/>
+                <Drawer.Screen name='Setup' component={SettingsStack} options={{
+                  drawerIcon: ({color}) => (
+                    <Ionicons name="settings" size={22} color={color}/>
+                  )
+                }}/>
               </Drawer.Navigator>
           }
         </NavigationContainer>
