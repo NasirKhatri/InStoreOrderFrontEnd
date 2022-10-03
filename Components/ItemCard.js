@@ -19,11 +19,11 @@ const ItemCard = ({ type, item }) => {
                 </View>
                 <Text>Rs : {item.SalesPrice} </Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-end' }}>
-                    <RoundButton text='-' />
+                    <RoundButton text='-' onPress={() => storeData.dispatchDineInOrders({type: "decrease", itemID: item.ItemID, itemDetails: item, tableNumber: "1"}) }/>
                     <View style={{ width: 64, height: 32, borderWidth: 1, borderColor: 'lightgray', borderRadius: 16, marginHorizontal: 5 }}>
                         <Text style={{ textAlign: 'center', paddingTop: 5 }}>6</Text>
                     </View>
-                    <RoundButton text='+' onPress={() => storeData.dispatchDineInOrders({type: "add", itemDetails: item, tableNumber: 1}) }/>
+                    <RoundButton text='+' onPress={() => storeData.dispatchDineInOrders({type: "increase", itemID: item.ItemID, itemDetails: item, tableNumber: "1"}) }/>
                 </View>
             </View>
         </View>

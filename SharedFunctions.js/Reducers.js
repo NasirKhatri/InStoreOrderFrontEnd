@@ -118,11 +118,69 @@ export const discountsUpdateReducer = (state, action) => {
 }
 
 export const dineInOrdersReducers = (state, action) => {
-    const itemDetails = action.itemDetails;
+    let itemDetails = action.itemDetails;
     const tableNumber = action.tableNumber;
+    const itemID = action.itemID;
     const type = action.type;
+    
 
-    if(!state.tableNumber) {
+    if(!state.hasOwnProperty(tableNumber)) {
+        return {...state, [tableNumber] : [{...itemDetails, Qty:1}]}
+    }
+    else {
+        let tempArray;
+        let ItemIndex;
+        if(action.type !== 'clear') {
+            tempArray = Object.assign([], state[tableNumber]);
+            ItemIndex = tempArray.findIndex((item) => item.ItemID === itemID);
+        }
         
+        switch (type) {
+            case increase:
+                if(ItemIndex === -1) {
+                    itemDetails.Qty = 1;
+                    itemDetails = Object.assign({}, itemDetails);
+                    break;
+                }
+                else {
+                    tempArray[ItemIndex].Qty++;
+                    tempArray = Object.assign([], tempArray);
+                    break;
+                }
+    
+            case decrease:
+                if (tempArray[ItemIndex].Qty > 1) {
+                    tempArray[ItemIndex].Qty--;
+                    tempArray = Object.assign([], tempArray);
+                    break;
+                }
+                break;
+            case setQty:
+                if(action.qty > 0) {
+                    tempArray[ItemIndex].Qty = parseInt(action.qty);
+                    break;
+                }
+                else {
+                    tempArray[ItemIndex].Qty = 1;
+                    break;
+                }
+            case deleteitem:
+                tempArray.splice(ItemIndex, 1);
+                tempArray = Object.assign([], tempArray);
+                break;
+            case clear:
+                tempArray = Object.assign([], []);
+                break;
+            
+            default:
+                return state;
+        }
+
+        if(ItemIndex === -1) {
+            return {...state, [tableNumber]: [...state[tableNumber], itemDetails]}
+        }
+        else {
+            return { ...state, [tableNumber]: tempArray }
+        }
     }
 }
