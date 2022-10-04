@@ -7,13 +7,20 @@ import { CartButton } from '../../Components/Button.js';
 import CategoryCard from '../../Components/CategoryCard';
 import { getCategories, getTables } from '../../SharedFunctions.js/GetQueries';
 import { Dropdown } from '../../Components/Dropdown';
+import { StoreContext } from '../../SharedFunctions.js/StoreContext';
 
 
 const CategoriesScreen = ({ navigation }) => {
+    const storeData = React.useContext(StoreContext);
     const { isLoading: cloading, data: cdata } = useQuery(['categories'], () => getCategories("POS"));
     const branchNo = 15; // Branch Number should not be fixed need to be fixed later
     const { isLoading: tloading, data: tdata} = useQuery(['tables', branchNo], () => getTables("dropdown", branchNo));
-    const [table, setTable] = React.useState(null);
+
+    React.useEffect(() => {
+        if(tdata) {
+            storeData.setTableNumber(tdata[0].id);
+        }
+    }, [tloading]);
 
     if (cloading || tloading) {
         return (
@@ -25,7 +32,7 @@ const CategoriesScreen = ({ navigation }) => {
         return (
             <View style={globalStyles.body}>
                 <View style={{marginBottom : 15}}>
-                <Dropdown value={table} setValue={setTable} data={!tloading ? tdata : []} />
+                <Dropdown value={storeData.tableNumber} setValue={storeData.setTableNumber} data={!tloading ? tdata : []} />
                 </View>
                 <FlatList
                     columnWrapperStyle={{ justifyContent: 'flex-start'}}

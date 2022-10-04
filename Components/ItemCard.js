@@ -14,16 +14,16 @@ const ItemCard = ({ type, item }) => {
             <View style={{ flex: 1, marginLeft: 16 }}>
                 <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
                     <Text style={styles.Title}>{item.ItemName}</Text>
-                    {type === 'cart' ? <IconButton name='delete' onPress={() => null} color='red' /> : <></>}
-                    {item.Discount > 0 ? <Text style={{fontWeight: 'bold', color: 'red'}}>{item.Discount}% Off</Text> : <></>}
+                    {type === 'cart' ? <IconButton name='delete' onPress={() => storeData.dispatchDineInOrders({type: "delete", itemID: item.ItemID, itemDetails: item, tableNumber: storeData.tableNumber}) } color='red' /> : <></>}
+                    {item.Discount > 0  && type != 'cart' ? <Text style={{fontWeight: 'bold', color: 'red'}}>{item.Discount}% Off</Text> : <></>}
                 </View>
                 <Text>Rs : {item.SalesPrice} </Text>
                 <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'flex-end' }}>
-                    <RoundButton text='-' onPress={() => storeData.dispatchDineInOrders({type: "decrease", itemID: item.ItemID, itemDetails: item, tableNumber: "1"}) }/>
+                    <RoundButton text='-' onPress={() => storeData.dispatchDineInOrders({type: "decrease", itemID: item.ItemID, itemDetails: item, tableNumber: storeData.tableNumber}) }/>
                     <View style={{ width: 64, height: 32, borderWidth: 1, borderColor: 'lightgray', borderRadius: 16, marginHorizontal: 5 }}>
-                        <Text style={{ textAlign: 'center', paddingTop: 5 }}>6</Text>
+                        <Text style={{ textAlign: 'center', paddingTop: 5 }}>{type === 'cart' ? item.Qty : 0}</Text>
                     </View>
-                    <RoundButton text='+' onPress={() => storeData.dispatchDineInOrders({type: "increase", itemID: item.ItemID, itemDetails: item, tableNumber: "1"}) }/>
+                    <RoundButton text='+' onPress={() => storeData.dispatchDineInOrders({type: "increase", itemID: item.ItemID, itemDetails: item, tableNumber: storeData.tableNumber}) }/>
                 </View>
             </View>
         </View>

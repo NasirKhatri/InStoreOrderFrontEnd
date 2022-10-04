@@ -10,7 +10,7 @@ export const invoiceUpdateReducer = (state, action) => {
     let ItemDetails;
     let ItemIndex;
 
-    if(action.type !== 'clear') {
+    if (action.type !== 'clear') {
         switch (active_invoice) {
             case 1:
                 tempArray = Object.assign([], state.invoice1_details);
@@ -24,14 +24,14 @@ export const invoiceUpdateReducer = (state, action) => {
             default:
                 break;
         }
-    
+
         ItemIndex = tempArray.findIndex((item) => item.ItemID === action.ItemNumber);
     }
 
 
     switch (action.type) {
         case increase:
-            if(ItemIndex === -1) {
+            if (ItemIndex === -1) {
                 ItemDetails = action.ItemDetails;
                 ItemDetails.Qty = 1;
                 ItemDetails = Object.assign({}, ItemDetails);
@@ -51,7 +51,7 @@ export const invoiceUpdateReducer = (state, action) => {
             }
             break;
         case setQty:
-            if(action.qty > 0) {
+            if (action.qty > 0) {
                 tempArray[ItemIndex].Qty = parseInt(action.qty);
                 break;
             }
@@ -66,31 +66,31 @@ export const invoiceUpdateReducer = (state, action) => {
         case clear:
             tempArray = Object.assign([], []);
             break;
-        
+
         default:
             return state;
     }
 
     switch (active_invoice) {
         case 1:
-            if(ItemIndex === -1) {
-                return {...state, invoice1_details: [...state.invoice1_details, ItemDetails]}
+            if (ItemIndex === -1) {
+                return { ...state, invoice1_details: [...state.invoice1_details, ItemDetails] }
             }
             else {
                 return { ...state, invoice1_details: tempArray }
             }
-         
+
         case 2:
-            if(ItemIndex === -1) {
-                return {...state, invoice2_details: [...state.invoice2_details, ItemDetails]}
+            if (ItemIndex === -1) {
+                return { ...state, invoice2_details: [...state.invoice2_details, ItemDetails] }
             }
             else {
                 return { ...state, invoice2_details: tempArray }
             }
 
         case 3:
-            if(ItemIndex === -1) {
-                return {...state, invoice3_details: [...state.invoice3_details, ItemDetails]}
+            if (ItemIndex === -1) {
+                return { ...state, invoice3_details: [...state.invoice3_details, ItemDetails] }
             }
             else {
                 return { ...state, invoice3_details: tempArray }
@@ -104,13 +104,13 @@ export const invoiceUpdateReducer = (state, action) => {
 export const discountsUpdateReducer = (state, action) => {
     let active_invoice = action.active_invoice;
     let additionalDiscount = action.addDiscount ? action.addDiscount : 0;
-    switch(active_invoice) {
+    switch (active_invoice) {
         case 1:
-            return {...state, discount1: additionalDiscount}
+            return { ...state, discount1: additionalDiscount }
         case 2:
-            return {...state, discount2: additionalDiscount}
+            return { ...state, discount2: additionalDiscount }
         case 3:
-            return {...state, discount3: additionalDiscount}
+            return { ...state, discount3: additionalDiscount }
         default:
             return state;
     }
@@ -122,65 +122,68 @@ export const dineInOrdersReducers = (state, action) => {
     const tableNumber = action.tableNumber;
     const itemID = action.itemID;
     const type = action.type;
-    
 
-    if(!state.hasOwnProperty(tableNumber)) {
-        return {...state, [tableNumber] : [{...itemDetails, Qty:1}]}
+    if(type === decrease && !state.hasOwnProperty(tableNumber)) {
+        return state;
     }
-    else {
-        let tempArray;
-        let ItemIndex;
-        if(action.type !== 'clear') {
-            tempArray = Object.assign([], state[tableNumber]);
-            ItemIndex = tempArray.findIndex((item) => item.ItemID === itemID);
-        }
-        
-        switch (type) {
-            case increase:
-                if(ItemIndex === -1) {
-                    itemDetails.Qty = 1;
-                    itemDetails = Object.assign({}, itemDetails);
-                    break;
-                }
-                else {
-                    tempArray[ItemIndex].Qty++;
-                    tempArray = Object.assign([], tempArray);
-                    break;
-                }
-    
-            case decrease:
-                if (tempArray[ItemIndex].Qty > 1) {
-                    tempArray[ItemIndex].Qty--;
-                    tempArray = Object.assign([], tempArray);
-                    break;
-                }
+
+
+    let tempArray;
+    let ItemIndex;
+    if (action.type !== 'clear') {
+        tempArray = Object.assign([], state[tableNumber]);
+        ItemIndex = tempArray.findIndex((item) => item.ItemID === itemID);
+    }
+
+    switch (type) {
+        case increase:
+            if (!state.hasOwnProperty(tableNumber)) {
+                return { ...state, [tableNumber]: [{ ...itemDetails, Qty: 1 }] }
+            }
+
+            if (ItemIndex === -1) {
+                itemDetails.Qty = 1;
+                itemDetails = Object.assign({}, itemDetails);
                 break;
-            case setQty:
-                if(action.qty > 0) {
-                    tempArray[ItemIndex].Qty = parseInt(action.qty);
-                    break;
-                }
-                else {
-                    tempArray[ItemIndex].Qty = 1;
-                    break;
-                }
-            case deleteitem:
-                tempArray.splice(ItemIndex, 1);
+            }
+            else {
+                tempArray[ItemIndex].Qty++;
                 tempArray = Object.assign([], tempArray);
                 break;
-            case clear:
-                tempArray = Object.assign([], []);
-                break;
-            
-            default:
-                return state;
-        }
+            }
 
-        if(ItemIndex === -1) {
-            return {...state, [tableNumber]: [...state[tableNumber], itemDetails]}
-        }
-        else {
-            return { ...state, [tableNumber]: tempArray }
-        }
+        case decrease:
+            if (tempArray[ItemIndex].Qty > 1) {
+                tempArray[ItemIndex].Qty--;
+                tempArray = Object.assign([], tempArray);
+                break;
+            }
+            break;
+        case setQty:
+            if (action.qty > 0) {
+                tempArray[ItemIndex].Qty = parseInt(action.qty);
+                break;
+            }
+            else {
+                tempArray[ItemIndex].Qty = 1;
+                break;
+            }
+        case deleteitem:
+            tempArray.splice(ItemIndex, 1);
+            tempArray = Object.assign([], tempArray);
+            break;
+        case clear:
+            tempArray = Object.assign([], []);
+            break;
+
+        default:
+            return state;
+    }
+
+    if (ItemIndex === -1) {
+        return { ...state, [tableNumber]: [...state[tableNumber], itemDetails] }
+    }
+    else {
+        return { ...state, [tableNumber]: tempArray }
     }
 }
